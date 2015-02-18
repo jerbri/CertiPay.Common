@@ -17,7 +17,9 @@ For any questions or comments, please open an issue in our GitHub Issue tracker 
 
 ## NuGet Package
 
-TODO
+You can find the packages built for this project on NuGet by searching for `CertiPay` or from the package manager console.
+
+i.e. `Install-Package CertiPay.Common`
 
 ## Continuous Integration System
 
