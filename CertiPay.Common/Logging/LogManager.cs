@@ -18,9 +18,11 @@
             // Note: These properties are statically configured here, but can be adjusted via their
             // respective set properties by an application for special use cases.
 
-            ApplicationName = ConfigurationManager.AppSettings["Application"] ?? "Unknown";
-            LogLevel = new LoggingLevelSwitch(LogEventLevel.Information);
-            LogFilePath = ConfigurationManager.AppSettings["LogFilePath"] ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
+            ApplicationName = ConfigurationManager.AppSettings["Application"].TrimToNull() ?? "Unknown";
+
+            LogFilePath = ConfigurationManager.AppSettings["LogFilePath"].TrimToNull() ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
+
+            LogLevel = new LoggingLevelSwitch((LogEventLevel)Enum.Parse(typeof(LogEventLevel), value: ConfigurationManager.AppSettings["LogLevel"].TrimToNull() ?? "Information", ignoreCase: true));
         }
 
         /// <summary>
@@ -28,19 +30,24 @@
         /// of the file date. E.g. "Logs\myapp-{Date}.log" will result in log files such
         /// as "Logs\myapp-2013-10-20.log", "Logs\myapp-2013-10-21.log" and so on..
         ///
-        /// Defaults to c:\Logs\{Environment}\{Application}\-{Date}.log
+        /// Pulls from AppSettings["LogFilePath"], defaults to c:\Logs\{Environment}\{Application}\-{Date}.log
         /// </summary>
         public static String LogFilePath { get; set; }
 
         /// <summary>
-        /// The name of the application being logged for
+        /// The name of the application being logged for.
+        ///
+        /// Pulls from AppSettings["Application"], defaults to Unknown
         /// </summary>
         public static String ApplicationName { get; set; }
 
         /// <summary>
-        /// Adjusts the logging level for the entire log system
+        /// Adjusts the logging level for the entire log system.
+        ///
+        /// Pulls from AppSettings["LogLevel"], dsefaults to Information.
+        /// Possible values are Verbose, Debug, Information, Warning, Error, Fatal
         /// </summary>
-        public static LoggingLevelSwitch LogLevel { get; set; }
+        public static LoggingLevelSwitch LogLevel { get; private set; }
 
         public static ILog GetLogger<T>()
         {
