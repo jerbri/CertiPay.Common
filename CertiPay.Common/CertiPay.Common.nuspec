@@ -10,14 +10,14 @@
     <licenseUrl>https://github.com/CertiPay/CertiPay.Common/blob/master/LICENSE.md</licenseUrl>
     <authors>CertiPay, Matt Wagner</authors>
     <owners>Matt Wagner</owners>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.8" />
+      <dependency id="StackExchange.Redis" version="1.0.371" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\CertiPay.Common*" target="lib\net451" />
     <file src="..\README.md" target="tools" />
     <file src="..\LICENSE.md" target="tools" />
   </files>
-  <dependencies>
-    <dependency id="Newtonsoft.Json" version="6.0.8" />
-    <dependency id="StackExchange.Redis" version="1.0.371" />
-  </dependencies>
 </package>
