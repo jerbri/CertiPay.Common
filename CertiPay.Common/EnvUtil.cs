@@ -3,41 +3,28 @@ using System.Configuration;
 
 namespace CertiPay.Common
 {
-    public enum Environment
+    public static class EnvUtil
     {
-        Local,
-        Test,
-        Staging,
-        Production
-    }
+        public enum Environment
+        {
+            Local,
+            Test,
+            Staging,
+            Production
+        }
 
-    public interface IEnvUtil
-    {
         /// <summary>
         /// Returns the current executing environment. Defaults to Local if no value is set in the config
         /// </summary>
-        Environment Current { get; }
+        public static Environment Current { get { return current.Value; } }
 
-        Boolean IsLocal { get; }
+        public static Boolean IsLocal { get { return Environment.Local == Current; } }
 
-        Boolean IsTest { get; }
+        public static Boolean IsTest { get { return Environment.Test == Current; } }
 
-        Boolean IsStaging { get; }
+        public static Boolean IsStaging { get { return Environment.Staging == Current; } }
 
-        Boolean IsProd { get; }
-    }
-
-    public class EnvUtil : IEnvUtil
-    {
-        public virtual Environment Current { get { return current.Value; } }
-
-        public Boolean IsLocal { get { return Environment.Local == current.Value; } }
-
-        public Boolean IsTest { get { return Environment.Test == current.Value; } }
-
-        public Boolean IsStaging { get { return Environment.Staging == current.Value; } }
-
-        public Boolean IsProd { get { return Environment.Production == current.Value; } }
+        public static Boolean IsProd { get { return Environment.Production == Current; } }
 
         private static readonly Lazy<Environment> current = new Lazy<Environment>(() =>
         {

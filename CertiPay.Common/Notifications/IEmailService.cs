@@ -24,29 +24,36 @@ namespace CertiPay.Common.Notifications
 
     public class EmailService : IEmailService
     {
-        public const String NO_REPLY_ADDR = "NoReply@CertiPay.com";
+        private static readonly ILog Log = LogManager.GetLogger<IEmailService>();
 
         /// <summary>
         /// A list of domains that we will allow emails to go to from outside of the production environment
         /// </summary>
-        public static readonly IEnumerable<String> AllowedTestingDomains = new[] { "certipay.com", "certigy.com" };
+        public IEnumerable<String> AllowedTestingDomains { get; set; }
 
-        private readonly static ILog Log = LogManager.GetLogger<IEmailService>();
-
-        private readonly IEnvUtil _envUtil;
         private readonly SmtpClient _smtp;
 
-        public EmailService(IEnvUtil envUtil, SmtpClient smtp)
+        public EmailService()
+            : this(new SmtpClient())
         {
-            this._envUtil = envUtil;
+        }
+
+        public EmailService(SmtpClient smtp)
+        {
             this._smtp = smtp;
+
+            this.AllowedTestingDomains = new[] { "certipay.com", "certigy.com" };
         }
 
         public async Task SendAsync(EmailNotification notification)
         {
             using (var msg = new MailMessage { })
             {
-                msg.From = new MailAddress(notification.FromAddress.TrimToNull() ?? NO_REPLY_ADDR);
+                // If no address is provided, it will use the default one from the Smtp config
+                if (!String.IsNullOrWhiteSpace(notification.FromAddress))
+                {
+                    msg.From = new MailAddress(notification.FromAddress);
+                }
 
                 foreach (var recipient in notification.Recipients)
                 {
@@ -118,7 +125,7 @@ namespace CertiPay.Common.Notifications
 
         public virtual void FilterRecipients(MailAddressCollection addresses)
         {
-            if (!_envUtil.IsProd)
+            if (EnvUtil.IsProd)
             {
                 // This is so we don't accidentally send customers emails from non-prod environments
 

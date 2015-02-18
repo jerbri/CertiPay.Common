@@ -1,26 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CertiPay.Common.Logging
+﻿namespace CertiPay.Common.Logging
 {
-    public static class LogManager
+    using CertiPay.Common;
+    using Serilog;
+    using Serilog.Core;
+    using Serilog.Events;
+    using System;
+    using System.Configuration;
+
+    /// <summary>
+    /// A class to handle the configuration and routing of log entries to various sinks, so that
+    /// an application is agnostic to it's destination.
+    /// </summary>
+    public class LogManager
     {
+        static LogManager()
+        {
+            // Note: These properties are statically configured here, but can be adjusted via their
+            // respective set properties by an application for special use cases.
+
+            ApplicationName = ConfigurationManager.AppSettings["Application"] ?? "Unknown";
+            LogLevel = new LoggingLevelSwitch(LogEventLevel.Information);
+            LogFilePath = ConfigurationManager.AppSettings["LogFilePath"] ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
+        }
+
+        /// <summary>
+        /// String describing the location of the log files, with {Date} in the place
+        /// of the file date. E.g. "Logs\myapp-{Date}.log" will result in log files such
+        /// as "Logs\myapp-2013-10-20.log", "Logs\myapp-2013-10-21.log" and so on..
+        ///
+        /// Defaults to c:\Logs\{Environment}\{Application}\-{Date}.log
+        /// </summary>
+        public static String LogFilePath { get; set; }
+
+        /// <summary>
+        /// The name of the application being logged for
+        /// </summary>
+        public static String ApplicationName { get; set; }
+
+        /// <summary>
+        /// Adjusts the logging level for the entire log system
+        /// </summary>
+        public static LoggingLevelSwitch LogLevel { get; set; }
+
         public static ILog GetLogger<T>()
         {
-            throw new NotImplementedException();
+            return new SerilogLogger(logger.ForContext<T>());
         }
 
         public static ILog GetLogger(Type type)
         {
-            throw new NotImplementedException();
+            return new SerilogLogger(logger.ForContext(type));
         }
 
         public static ILog GetLogger(String key)
         {
-            throw new NotImplementedException();
+            return new SerilogLogger(logger.ForContext("name", key));
         }
+
+        internal static ILogger logger { get { return _logger.Value; } }
+
+        private static Lazy<ILogger> _logger = new Lazy<ILogger>(() =>
+        {
+            // Using a lazy<t> here ensures that this is only done once, thread-safe, on first-use
+            // After the logmanager is used, the properties such as path, version, appname, and environment
+            // name are all set for the duration i think?
+
+            Log.Logger =
+                new LoggerConfiguration()
+
+                .MinimumLevel.ControlledBy(LogManager.LogLevel)
+
+                .Enrich.WithMachineName()
+
+                .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
+                .Enrich.WithProperty("Version", Utilities.Version)
+                .Enrich.WithProperty("Environment", EnvUtil.Current)
+
+                .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)
+
+                .WriteTo.RollingFile(pathFormat: LogFilePath)
+
+                //.WriteTo.Sink(new RollingFileSink
+                //(
+                //    pathFormat: LogFilePath,
+                //    textFormatter: new JsonFormatter(), // use json so we an scoop these up via logstash?
+                //    fileSizeLimitBytes: null, // default to 1gb
+                //    retainedFileCountLimit: 31 // default to 31
+                //))
+
+                // .WriteTo ElasticSearch("settings", , restrictedToMinimumLevel: LogEventLevel.Debug)
+
+                .CreateLogger();
+
+            return Log.Logger;
+        });
     }
 }
