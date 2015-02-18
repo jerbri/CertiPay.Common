@@ -1,33 +1,36 @@
 $PSake.use_exit_on_error = $true
-Properties {
-	## The version format is Major.Minor.Build
-	## The dll will be stamped with the informational version including the changeset
-	$MajorVersion = "0"
-	$MinorVersion = "0"
-	$Version = "$MajorVersion.$MinorVersion.$BuildNumber"
-	$InformationalVersion = "$Version.$CommitHash"
-}
-
-## This comes from the build server iteration
-if(!$BuildNumber) { $BuildNumber = "1" }
-
-## This comes from the Hg commit hash used to build
-if(!$CommitHash) { $CommitHash = "local-build" }
-
-## The build configuration, i.e. Debug/Release
-if(!$Configuration) { $Configuration = "Debug" }
 
 $Here = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
 $SolutionRoot = (Split-Path -parent $Here)
 
-Import-Module "$Here\Common" -DisableNameChecking
+$ProjectName = "CertiPay"
 
-$SolutionFile = "$SolutionRoot\CertiPay.sln"
+$SolutionFile = "$SolutionRoot\$ProjectName.sln"
+
+## This comes from the build server iteration
+if(!$BuildNumber) { $BuildNumber = $env:APPVEYOR_BUILD_NUMBER }
+if(!$BuildNumber) { $BuildNumber = "1"}
+
+## This comes from the Hg commit hash used to build
+if(!$CommitHash) { $CommitHash = $env:APPVEYOR_REPO_COMMIT }
+if(!$CommitHash) { $CommitHash = "local-build" }
+
+## The build configuration, i.e. Debug/Release
+if(!$Configuration) { $Configuration = $env:Configuration }
+if(!$Configuration) { $Configuration = "Release" }
+
+if(!$Version) { $Version = $env:APPVEYOR_BUILD_VERSION }
+if(!$Version) { $Version = "0.1.$BuildNumber" }
+
+Import-Module "$Here\Common" -DisableNameChecking
 
 $NuGet = Join-Path $SolutionRoot ".nuget\nuget.exe"
 
 $MSBuild ="${env:ProgramFiles(x86)}\MSBuild\12.0\Bin\msbuild.exe"
+
+$NUnitVersion = "2.6.4"
+$NUnit = Join-Path $SolutionRoot "packages\NUnit.Runners.$NUnitVersion\tools\nunit-console.exe"
 
 FormatTaskName (("-"*25) + "[{0}]" + ("-"*25))
 
@@ -37,8 +40,8 @@ Task Build -depends Restore-Packages, Update-AssemblyInfoFiles {
 	exec { . $MSBuild $SolutionFile /t:Build /v:normal /p:Configuration=$Configuration }
 }
 
-Task Package {
-	## TODO
+Task Package -depends Build {
+	exec { . $NuGet pack CertiPay.Common\CertiPay.Common.nuspec -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
 }
 
 Task Clean {
