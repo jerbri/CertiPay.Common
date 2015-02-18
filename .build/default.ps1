@@ -41,7 +41,7 @@ Task Build -depends Restore-Packages, Update-AssemblyInfoFiles {
 }
 
 Task Package -depends Build {
-	exec { . $NuGet pack CertiPay.Common\CertiPay.Common.nuspec -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
+	exec { . $NuGet pack "$SolutionRoot\CertiPay.Common\CertiPay.Common.nuspec" -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
 }
 
 Task Clean {
