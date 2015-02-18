@@ -8,10 +8,6 @@ Properties {
 	$InformationalVersion = "$Version.$CommitHash"
 }
 
-## For now, during development, automatically run migrations
-## We will likely turn this off solidifying our schema
-if(!$AutomaticMigrationsEnabled) { $AutomaticMigrationsEnabled = $true }
-
 ## This comes from the build server iteration
 if(!$BuildNumber) { $BuildNumber = "1" }
 
@@ -43,10 +39,6 @@ Task Build -depends Restore-Packages, Update-AssemblyInfoFiles {
 
 Task Package {
 	## TODO
-}
-
-Task Create-Release -depends Install-OctoExe {
-	exec { Create-Release -ReleaseNumber $Version }
 }
 
 Task Clean {
