@@ -16,4 +16,8 @@
     <file src="..\README.md" target="tools" />
     <file src="..\LICENSE.md" target="tools" />
   </files>
+  <dependencies>
+    <dependency id="Newtonsoft.Json" version="6.0.8" />
+    <dependency id="StackExchange.Redis" version="1.0.371" />
+  </dependencies>
 </package>
