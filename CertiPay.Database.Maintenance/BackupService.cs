@@ -9,32 +9,59 @@
     using DeviceType = Microsoft.SqlServer.Management.Smo.DeviceType;
 
     /// <summary>
-    /// Performs a full backup of the configured database, verifying it once complete
+    /// Provides functions for conducting backups of a SQL Server database, using optional compression
+    /// and verification when complete
     /// </summary>
-    public class FullBackup
+    public class BackupService
     {
-        private static readonly ILog Log = LogManager.GetLogger<FullBackup>();
+        // TODO Logging right now is tied to CertiPay.Common which uses Serilog. Might pull out that dependency and use Common.Logging?
+
+        private static readonly ILog Log = LogManager.GetLogger<BackupService>();
 
         public class Configuration
         {
+            /// <summary>
+            /// The connection string for running the backup, including database name
+            /// </summary>
             public String ConnectionString { get; set; }
 
+            /// <summary>
+            /// The output file for the backup. Will use SQL Server's configured backup folder
+            /// </summary>
             public String OutputFileName { get; set; }
 
+            /// <summary>
+            /// True if the backup should be checked for consistency before backup, defaults to TRUE
+            /// </summary>
+            public Boolean RunCheckDb { get; set; }
+
+            /// <summary>
+            /// True if the backup should use compression, defaults to TRUE
+            /// </summary>
             public Boolean Compression { get; set; }
 
+            /// <summary>
+            /// True if the backup should be an incremental backup, defaults to FALSE
+            /// </summary>
             public Boolean IncrementalBackup { get; set; }
 
+            /// <summary>
+            /// True if the backup should be verified after completion, defaults to TRUE
+            /// </summary>
             public Boolean VerifyBackup { get; set; }
 
             public Configuration()
             {
+                this.RunCheckDb = true;
                 this.Compression = true;
                 this.VerifyBackup = true;
             }
         }
 
-        public void Execute(Configuration configuration)
+        /// <summary>
+        /// Run a backup with a set of configurable options
+        /// </summary>
+        public void Run(Configuration configuration)
         {
             using (var connection = new SqlConnection(configuration.ConnectionString))
             {
@@ -46,8 +73,13 @@
                 // Loads the table/index information
                 database.Refresh();
 
-                // Check database integrity ~ DBCC CheckDB
-                WeeklyMaintenance.CheckDatabase(database);
+                if (configuration.RunCheckDb)
+                {
+                    // Check database integrity ~ DBCC CheckDB
+                    MaintenanceService.CheckDatabase(database);
+                }
+
+                // TODO Allow a configurable backup directory?
 
                 String destination = Path.Combine(server.BackupDirectory, configuration.OutputFileName);
 
@@ -69,6 +101,9 @@
             }
         }
 
+        /// <summary>
+        /// Returns true if the backup file is passed verification on SQL Server
+        /// </summary>
         public Boolean VerifyBackup(Server server, String backupFile)
         {
             Restore restore = new Restore();
@@ -78,6 +113,9 @@
             return restore.SqlVerify(server);
         }
 
+        /// <summary>
+        /// Backup the database to the configured destination
+        /// </summary>
         public void BackupDatabase(Server server, Database database, Configuration configuration, String destination)
         {
             Log.Info("Running a backup for {0} to {1}", database.Name, destination);
@@ -102,6 +140,8 @@
 
         private void percentCompleteHandler(object sender, PercentCompleteEventArgs e)
         {
+            // TODO Should provide a configurable handler for updates on backup progress
+
             Log.Info("Database Backup: {0}% completed.", e.Percent);
         }
     }

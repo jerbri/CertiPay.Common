@@ -8,36 +8,58 @@
     using System.Data.SqlClient;
 
     /// <summary>
-    /// Perform routine weekly maintenance on the database
+    /// Provides basic functions for conducting maintenance on a SQL Server database
     /// </summary>
-    public class WeeklyMaintenance
+    public class MaintenanceService
     {
-        private static readonly ILog Log = LogManager.GetLogger<WeeklyMaintenance>();
+        // TODO Logging right now is tied to CertiPay.Common which uses Serilog. Might pull out that dependency and use Common.Logging?
+
+        private static readonly ILog Log = LogManager.GetLogger<MaintenanceService>();
 
         public class Configuration
         {
+            /// <summary>
+            /// The connection string for running the backup, including database name
+            /// </summary>
             public String ConnectionString { get; set; }
 
             /// <summary>
-            /// Rebuild indices whose fragmentation is greater than this percentage (defaults to 30%)
+            /// True if the database should be checked for consistency before maintenance, defaults to TRUE
+            /// </summary>
+            public Boolean RunCheckDb { get; set; }
+
+            /// <summary>
+            /// Rebuild indices whose fragmentation is greater than this percentage, defaults to 30%
             /// </summary>
             public int RebuildIndicesPercentage { get; set; }
 
             /// <summary>
-            /// Reorganize indices whose fragmentation is greater than this percentage (defaults to 10%)
+            /// Reorganize indices whose fragmentation is greater than this percentage, defaults to 10%
             /// </summary>
             public int ReorganizeIndicesPercentage { get; set; }
 
+            /// <summary>
+            /// True if the database should shrink it's files as appropriate, defaults to FALSE
+            /// </summary>
+            /// <remarks>
+            /// Many SQL DBA's highly advise against running this, so it's going to be completely optional
+            /// </remarks>
+            public Boolean ShrinkDatabaseFiles { get; set; }
+
             public Configuration()
             {
+                this.RunCheckDb = true;
                 this.RebuildIndicesPercentage = 30;
                 this.ReorganizeIndicesPercentage = 10;
             }
         }
 
-        public void Execute(Configuration configuration)
+        /// <summary>
+        /// Run maintenance on a database with a set of configurable options
+        /// </summary>
+        public void Run(Configuration configuration)
         {
-            Log.Info("Starting database weekly maintenance.");
+            Log.Info("Starting database maintenance with configuration {@config}", configuration);
 
             using (var connection = new SqlConnection(configuration.ConnectionString))
             {
@@ -47,14 +69,20 @@
                 // Loads the table/index information
                 database.Refresh();
 
-                // Checks the database for consistency
-                CheckDatabase(database);
+                if (configuration.RunCheckDb)
+                {
+                    // Checks the database for consistency
+                    CheckDatabase(database);
+                }
 
                 // Run maintenace as configured
                 IndexMaintenance(database, configuration);
 
-                // Many people actually tell you to NOT shrink your database files
-                // ShrinkDatabase(database);
+                if (configuration.ShrinkDatabaseFiles)
+                {
+                    // Many people actually tell you to NOT shrink your database files
+                    ShrinkDatabase(database);
+                }
             }
 
             Log.Info("Completed database weekly maintenance job");
