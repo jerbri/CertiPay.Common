@@ -10,13 +10,14 @@
     <licenseUrl>https://github.com/CertiPay/CertiPay.Common/blob/master/LICENSE.md</licenseUrl>
     <authors>CertiPay, Matt Wagner</authors>
     <owners>Matt Wagner</owners>
+    <dependencies>
+      <dependency id="Unofficial.Microsoft.SQLServer.SMO.2014" version="12.0.2000.8" />
+      <dependency id="CertiPay.Common" version="0.0.12" />
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\CertiPay.Database.Maintenance*" target="lib\net451" />
     <file src="..\README.md" target="tools" />
     <file src="..\LICENSE.md" target="tools" />
   </files>
-  <dependencies>
-    <dependency id="Unofficial.Microsoft.SQLServer.SMO.2014" version="12.0.2000.8" />
-  </dependencies>
 </package>
