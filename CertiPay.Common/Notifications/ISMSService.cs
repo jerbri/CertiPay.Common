@@ -26,11 +26,11 @@ namespace CertiPay.Common.Notifications
 
         private readonly String _twilioSourceNumber;
 
-        public SmsService(String twilioAccountSid, String twilioAuthToken, String twilioSourceNumber)
+        public SmsService(TwilioConfig config)
         {
-            this._twilioAccountSId = twilioAccountSid;
-            this._twilioAuthToken = twilioAuthToken;
-            this._twilioSourceNumber = twilioSourceNumber;
+            this._twilioAccountSId = config.AccountSid;
+            this._twilioAuthToken = config.AuthToken;
+            this._twilioSourceNumber = config.SourceNumber;
         }
 
         public Task SendAsync(SMSNotification notification)
@@ -50,6 +50,15 @@ namespace CertiPay.Common.Notifications
 
                 return Task.FromResult(0);
             }
+        }
+
+        public class TwilioConfig
+        {
+            public String AccountSid { get; set; }
+
+            public String AuthToken { get; set; }
+
+            public String SourceNumber { get; set; }
         }
     }
 }
