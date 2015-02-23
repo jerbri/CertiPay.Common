@@ -10,12 +10,16 @@ namespace CertiPay.Common.WorkQueue
 
         public DateTime CompletedAt { get; set; }
 
-        // TODO Version?
+        public String Version { get; set; }
+
+        public EnvUtil.Environment Environment { get; set; }
 
         public CompletedWorkItem()
         {
             this.Server = System.Environment.MachineName;
             this.CompletedAt = DateTime.UtcNow;
+            this.Version = Utilities.Version;
+            this.Environment = EnvUtil.Current;
         }
     }
 }
