@@ -47,6 +47,7 @@ namespace CertiPay.Common.Notifications
 
         public async Task SendAsync(EmailNotification notification)
         {
+            using (Log.Timer("EmailService.SendAsync"))
             using (var msg = new MailMessage { })
             {
                 // If no address is provided, it will use the default one from the Smtp config
