@@ -35,18 +35,21 @@ namespace CertiPay.Common.Notifications
 
         public Task SendAsync(SMSNotification notification)
         {
-            // TODO Add logging
-
-            // TODO Add error handling
-
-            var client = new TwilioRestClient(_twilioAccountSId, _twilioAuthToken);
-
-            foreach (var recipient in notification.Recipients)
+            using (Log.Timer("SMSNotification.SendAsync"))
             {
-                client.SendSmsMessage(_twilioSourceNumber, recipient, notification.Content);
-            }
+                Log.Info("Sending SMSNotification {@Notification}", notification);
 
-            return Task.FromResult(0);
+                // TODO Add error handling
+
+                var client = new TwilioRestClient(_twilioAccountSId, _twilioAuthToken);
+
+                foreach (var recipient in notification.Recipients)
+                {
+                    client.SendSmsMessage(_twilioSourceNumber, recipient, notification.Content);
+                }
+
+                return Task.FromResult(0);
+            }
         }
     }
 }
