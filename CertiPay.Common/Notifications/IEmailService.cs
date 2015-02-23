@@ -50,6 +50,7 @@ namespace CertiPay.Common.Notifications
             using (var msg = new MailMessage { })
             {
                 // If no address is provided, it will use the default one from the Smtp config
+
                 if (!String.IsNullOrWhiteSpace(notification.FromAddress))
                 {
                     msg.From = new MailAddress(notification.FromAddress);
@@ -79,14 +80,14 @@ namespace CertiPay.Common.Notifications
                     // TODO Download any requested attachments
                 }
 
+                Log.Info("Sending email {@notification}", notification);
+
                 await SendAsync(msg);
             }
         }
 
         public void Send(MailMessage message)
         {
-            // TODO More logging!
-
             this.FilterRecipients(message.To);
             this.FilterRecipients(message.CC);
             this.FilterRecipients(message.Bcc);
@@ -97,6 +98,8 @@ namespace CertiPay.Common.Notifications
             Log.Debug("Email Message: BCC {0}", message.Bcc);
             Log.Debug("Email Message: Subject {0}", message.Subject);
             Log.Debug("Email Message: Body {0}", message.Body);
+
+            Log.Info("Sending email {@message}", message);
 
             _smtp.Send(message);
 
@@ -105,8 +108,6 @@ namespace CertiPay.Common.Notifications
 
         public async Task SendAsync(MailMessage message)
         {
-            // TODO More logging!
-
             this.FilterRecipients(message.To);
             this.FilterRecipients(message.CC);
             this.FilterRecipients(message.Bcc);
@@ -117,6 +118,8 @@ namespace CertiPay.Common.Notifications
             Log.Debug("Email Message: BCC {0}", message.Bcc);
             Log.Debug("Email Message: Subject {0}", message.Subject);
             Log.Debug("Email Message: Body {0}", message.Body);
+
+            Log.Info("Sending email {@message}", message);
 
             await _smtp.SendMailAsync(message);
 
