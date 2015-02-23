@@ -128,7 +128,7 @@ namespace CertiPay.Common.Notifications
 
         public virtual void FilterRecipients(MailAddressCollection addresses)
         {
-            if (EnvUtil.IsProd)
+            if (!EnvUtil.IsProd)
             {
                 // This is so we don't accidentally send customers emails from non-prod environments
 
