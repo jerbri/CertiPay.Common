@@ -8,6 +8,8 @@ namespace CertiPay.Common.Notifications
     /// </summary>
     public class EmailNotification : Notification
     {
+        public static String QueueName { get { return "EmailNotifications"; } }
+
         public String FromAddress { get; set; }
 
         public ICollection<String> CC { get; set; }

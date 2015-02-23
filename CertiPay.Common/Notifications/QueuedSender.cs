@@ -23,16 +23,16 @@ namespace CertiPay.Common.Notifications
 
         public async Task SendAsync(EmailNotification notification)
         {
-            // TODO Add logging
+            Log.Info("Sending Notification via Queue {Queue}: {@Notification}", EmailNotification.QueueName, notification);
 
-            await _queue.Enqueue(Queue.EmailNotifications, notification);
+            await _queue.Enqueue(EmailNotification.QueueName, notification);
         }
 
         public async Task SendAsync(SMSNotification notification)
         {
-            // TODO Add logging
+            Log.Info("Sending Notification via Queue {Queue}: {@Notification}", SMSNotification.QueueName, notification);
 
-            await _queue.Enqueue(Queue.SMSNotifications, notification);
+            await _queue.Enqueue(SMSNotification.QueueName, notification);
         }
 
         //public async Task SendAsync(IdentityMessage message)

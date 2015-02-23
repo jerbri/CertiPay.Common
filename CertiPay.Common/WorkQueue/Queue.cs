@@ -17,11 +17,5 @@ namespace CertiPay.Common.WorkQueue
         public long Processed { get; set; }
 
         public long Failed { get; set; }
-
-        // ------- Names of work queues will go here for strongly-typed references -------
-
-        public const String SMSNotifications = "SMSNotifications";
-
-        public const String EmailNotifications = "EmailNotifications";
     }
 }
