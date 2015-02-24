@@ -85,7 +85,10 @@
 
                 .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)
 
-                .WriteTo.RollingFile(pathFormat: LogFilePath)
+                .WriteTo.RollingFile(
+                    pathFormat: LogFilePath,
+                    outputTemplate: "{Timestamp} [{Level}] ({Version} on {MachineName}) {Message}{NewLine}{Exception}"
+                    )
 
                 //.WriteTo.Sink(new RollingFileSink
                 //(
