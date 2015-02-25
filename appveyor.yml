@@ -32,6 +32,9 @@ assembly_info:
   assembly_file_version: "{version}"
   assembly_informational_version: "{version}"
 
+# to disable automatic tests 
+test: off
+
 #---------------------------------#
 #       artifacts configuration   #
 #---------------------------------#
