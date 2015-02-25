@@ -12,7 +12,7 @@
     <owners>Matt Wagner</owners>
     <dependencies>
       <dependency id="Unofficial.Microsoft.SQLServer.SMO.2014" version="12.0.2000.8" />
-      <dependency id="CertiPay.Common" version="0.0.12" />
+      <dependency id="CertiPay.Common" version="0.0.18" />
     </dependencies>
   </metadata>
   <files>

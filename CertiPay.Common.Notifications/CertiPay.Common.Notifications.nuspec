@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>CertiPay.Common</id>
+    <id>CertiPay.Common.Notifications</id>
     <version>1.0.0</version>
-    <title>CertiPay.Common</title>
+    <title>CertiPay.Common.Notifications</title>
     <tags>certipay, utilities</tags>
-    <description>This library is intended to hold some common items used in our system like logging or queue management</description>
+    <description>An abstraction for sending notifications for our applications</description>
     <projectUrl>https://github.com/CertiPay/CertiPay.Common</projectUrl>
     <licenseUrl>https://github.com/CertiPay/CertiPay.Common/blob/master/LICENSE.md</licenseUrl>
     <authors>CertiPay, Matt Wagner</authors>
     <owners>Matt Wagner</owners>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="6.0.8" />
-      <dependency id="StackExchange.Redis" version="1.0.394" />
-      <dependency id="Serilog" version="1.4.196" />
+      <dependency id="CertiPay.Common" version="0.0.18" />
+      <dependency id="Twilio" version="3.6.25" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\CertiPay.Common*" target="lib\net451" />
+    <file src="bin\Release\CertiPay.Common.Notifications*" target="lib\net451" />
     <file src="..\README.md" target="tools" />
     <file src="..\LICENSE.md" target="tools" />
   </files>

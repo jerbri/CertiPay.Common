@@ -8,14 +8,14 @@
     {
         private static Lazy<String> version = new Lazy<String>(() =>
             {
-                AssemblyVersionAttribute attribute =
+                AssemblyInformationalVersionAttribute attribute =
                     Assembly
                     .GetExecutingAssembly()
                     .GetCustomAttributes(false)
-                    .OfType<AssemblyVersionAttribute>()
+                    .OfType<AssemblyInformationalVersionAttribute>()
                     .FirstOrDefault();
 
-                return attribute == null ? "Unknown" : attribute.Version;
+                return attribute == null ? "Unknown" : attribute.InformationalVersion;
             });
 
         /// <summary>
