@@ -6,21 +6,22 @@
 
     public static class Utilities
     {
-        private static Lazy<String> version = new Lazy<String>(() =>
+        /// <summary>
+        /// Returns the AssemblyInformationalVersion attribute of the executing library (not CertiPay.Common)
+        /// </summary>
+        public static String Version
+        {
+            get
             {
                 AssemblyInformationalVersionAttribute attribute =
                     Assembly
-                    .GetExecutingAssembly()
+                    .GetCallingAssembly()
                     .GetCustomAttributes(false)
                     .OfType<AssemblyInformationalVersionAttribute>()
                     .FirstOrDefault();
 
                 return attribute == null ? "Unknown" : attribute.InformationalVersion;
-            });
-
-        /// <summary>
-        /// Returns the AssemblyVersion attribute of the executing library (not CertiPay.Common)
-        /// </summary>
-        public static String Version { get { return version.Value; } }
+            }
+        }
     }
 }
