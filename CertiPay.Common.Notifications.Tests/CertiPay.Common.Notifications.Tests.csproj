@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{80A345B7-1F15-4D8B-8A45-D068E4C24138}</ProjectGuid>
+    <ProjectGuid>{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CertiPay.Common.Notifications</RootNamespace>
-    <AssemblyName>CertiPay.Common.Notifications</AssemblyName>
+    <RootNamespace>CertiPay.Common.Notifications.Tests</RootNamespace>
+    <AssemblyName>CertiPay.Common.Notifications.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,32 +42,29 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Twilio.Api">
-      <HintPath>..\packages\Twilio.3.6.26\lib\3.5\Twilio.Api.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Notifications\EmailNotification.cs" />
-    <Compile Include="Notifications\IEmailService.cs" />
-    <Compile Include="Notifications\INotificationSender.cs" />
-    <Compile Include="Notifications\ISMSService.cs" />
-    <Compile Include="Notifications\Notification.cs" />
-    <Compile Include="Notifications\QueuedSender.cs" />
-    <Compile Include="Notifications\SMSNotification.cs" />
+    <Compile Include="Notifications\EmailServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CertiPay.Common.Notifications\CertiPay.Common.Notifications.csproj">
+      <Project>{80a345b7-1f15-4d8b-8a45-d068e4c24138}</Project>
+      <Name>CertiPay.Common.Notifications</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CertiPay.Common\CertiPay.Common.csproj">
       <Project>{a92be565-b277-4d94-a782-b9c2f0162c35}</Project>
       <Name>CertiPay.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\LICENSE.md">
-      <Link>LICENSE.md</Link>
+    <None Include="..\.common\App.config">
+      <Link>App.config</Link>
     </None>
-    <None Include="CertiPay.Common.Notifications.nuspec" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

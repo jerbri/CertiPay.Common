@@ -80,6 +80,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Link>LICENSE.md</Link>
+    </None>
     <None Include="CertiPay.Database.Maintenance.nuspec" />
     <None Include="packages.config" />
     <None Include="README.md" />

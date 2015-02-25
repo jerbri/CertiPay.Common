@@ -12,8 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{19D3C9
 		Build.bat = Build.bat
 		.build\Common.psm1 = .build\Common.psm1
 		.build\default.ps1 = .build\default.ps1
-		LICENSE.md = LICENSE.md
-		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{150A9545-333E-4165-9205-8FD29B16FAF0}"
@@ -26,6 +24,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertiPay.Database.Maintenance", "CertiPay.Database.Maintenance\CertiPay.Database.Maintenance.csproj", "{0A20642B-8569-4478-8C21-D613E7EB39E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertiPay.Common.Notifications", "CertiPay.Common.Notifications\CertiPay.Common.Notifications.csproj", "{80A345B7-1F15-4D8B-8A45-D068E4C24138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertiPay.Common.Tests", "CertiPay.Common.Tests\CertiPay.Common.Tests.csproj", "{667ECF3D-7055-48C2-867F-FF78EBEF87E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertiPay.Common.Notifications.Tests", "CertiPay.Common.Notifications.Tests\CertiPay.Common.Notifications.Tests.csproj", "{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".common", ".common", "{7071EA42-FAFA-44A2-88C6-36C5142461B7}"
+	ProjectSection(SolutionItems) = preProject
+		.common\App.config = .common\App.config
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +54,14 @@ Global
 		{80A345B7-1F15-4D8B-8A45-D068E4C24138}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80A345B7-1F15-4D8B-8A45-D068E4C24138}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80A345B7-1F15-4D8B-8A45-D068E4C24138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{667ECF3D-7055-48C2-867F-FF78EBEF87E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{667ECF3D-7055-48C2-867F-FF78EBEF87E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{667ECF3D-7055-48C2-867F-FF78EBEF87E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{667ECF3D-7055-48C2-867F-FF78EBEF87E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
