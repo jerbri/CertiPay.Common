@@ -80,7 +80,7 @@
                 .Enrich.WithMachineName()
 
                 .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
-                .Enrich.WithProperty("Version", Utilities.Version)
+                .Enrich.WithProperty("Version", Utilities.Version())
                 .Enrich.WithProperty("Environment", EnvUtil.Current)
 
                 .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)

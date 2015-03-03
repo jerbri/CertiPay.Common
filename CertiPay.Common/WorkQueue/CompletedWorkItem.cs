@@ -18,7 +18,7 @@ namespace CertiPay.Common.WorkQueue
         {
             this.Server = System.Environment.MachineName;
             this.CompletedAt = DateTime.UtcNow;
-            this.Version = Utilities.Version;
+            this.Version = Utilities.Version();
             this.Environment = EnvUtil.Current;
         }
     }
