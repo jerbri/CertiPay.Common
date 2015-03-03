@@ -18,6 +18,11 @@ namespace CertiPay.PDF
     {
         private static readonly ILog Log = LogManager.GetLogger<PDFService>();
 
+        public PDFService()
+        {
+            // Run without installing a license key
+        }
+
         public PDFService(String abcPdfLicenseKey)
         {
             if (XSettings.LicenseType != LicenseType.Professional || !XSettings.LicenseValid)
