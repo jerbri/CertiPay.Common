@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".common", ".common", "{7071
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertiPay.PDF", "CertiPay.PDF\CertiPay.PDF.csproj", "{069D17DD-DB63-460D-9421-87FBB6AA0BB0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DBCBD60-11B3-4F27-9FA9-186731ECC5A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{069D17DD-DB63-460D-9421-87FBB6AA0BB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{069D17DD-DB63-460D-9421-87FBB6AA0BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{069D17DD-DB63-460D-9421-87FBB6AA0BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{069D17DD-DB63-460D-9421-87FBB6AA0BB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
