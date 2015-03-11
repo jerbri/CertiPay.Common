@@ -1,7 +1,9 @@
 ﻿using CertiPay.Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -25,6 +27,11 @@ namespace CertiPay.Common.Notifications
     public class EmailService : IEmailService
     {
         private static readonly ILog Log = LogManager.GetLogger<IEmailService>();
+
+        /// <summary>
+        /// The length of time we'll allow for downloading attachments for email notifications
+        /// </summary>
+        public static readonly TimeSpan DownloadTimeout = TimeSpan.FromMinutes(2);
 
         /// <summary>
         /// A list of domains that we will allow emails to go to from outside of the production environment
@@ -73,10 +80,8 @@ namespace CertiPay.Common.Notifications
 
                 foreach (var attachment in notification.Attachments)
                 {
-                    // TODO Download any requested attachments
+                    await AttachUrl(msg, attachment);
                 }
-
-                Log.Info("Sending email {@notification}", notification);
 
                 await SendAsync(msg);
             }
@@ -84,16 +89,9 @@ namespace CertiPay.Common.Notifications
 
         public void Send(MailMessage message)
         {
-            this.FilterRecipients(message.To);
-            this.FilterRecipients(message.CC);
-            this.FilterRecipients(message.Bcc);
-
-            Log.Debug("Email Message: From {0}", message.From);
-            Log.Debug("Email Message: TO {0}", message.To);
-            Log.Debug("Email Message: CC {0}", message.CC);
-            Log.Debug("Email Message: BCC {0}", message.Bcc);
-            Log.Debug("Email Message: Subject {0}", message.Subject);
-            Log.Debug("Email Message: Body {0}", message.Body);
+            FilterRecipients(message.To);
+            FilterRecipients(message.CC);
+            FilterRecipients(message.Bcc);
 
             Log.Info("Sending email {@message}", message);
 
@@ -104,16 +102,9 @@ namespace CertiPay.Common.Notifications
 
         public async Task SendAsync(MailMessage message)
         {
-            this.FilterRecipients(message.To);
-            this.FilterRecipients(message.CC);
-            this.FilterRecipients(message.Bcc);
-
-            Log.Debug("Email Message: From {0}", message.From);
-            Log.Debug("Email Message: TO {0}", message.To);
-            Log.Debug("Email Message: CC {0}", message.CC);
-            Log.Debug("Email Message: BCC {0}", message.Bcc);
-            Log.Debug("Email Message: Subject {0}", message.Subject);
-            Log.Debug("Email Message: Body {0}", message.Body);
+            FilterRecipients(message.To);
+            FilterRecipients(message.CC);
+            FilterRecipients(message.Bcc);
 
             Log.Info("Sending email {@message}", message);
 
@@ -142,9 +133,32 @@ namespace CertiPay.Common.Notifications
             // TODO Check blacklisted email addresses?
         }
 
-        public void AttachUrl(MailMessage msg, EmailNotification.Attachment attachment)
+        public async Task AttachUrl(MailMessage msg, EmailNotification.Attachment attachment)
         {
-            // TODO Download and attach the file at the Uri
+            using (HttpClient client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true }) { Timeout = DownloadTimeout })
+            {
+                Log.Debug("Attaching {@attachment} for {@msg}", attachment, msg);
+
+                if (String.IsNullOrWhiteSpace(attachment.Uri))
+                {
+                    Log.Debug("No Url provided for attachment, skipping");
+                    return;
+                }
+
+                if (String.IsNullOrWhiteSpace(attachment.Filename))
+                {
+                    Log.Debug("No filename provided for attachment, using default");
+                    attachment.Filename = "Attachment.pdf";
+                }
+
+                byte[] data = await client.GetByteArrayAsync(attachment.Uri);
+
+                // MailMessage disposes of the attachment stream when it disposes
+
+                msg.Attachments.Add(new Attachment(new MemoryStream(data), attachment.Filename));
+
+                Log.Debug("Completed attachment for {@msg}", msg);
+            }
         }
     }
 }
