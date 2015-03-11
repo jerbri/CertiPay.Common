@@ -33,11 +33,6 @@ namespace CertiPay.Common.Notifications
 
         private readonly SmtpClient _smtp;
 
-        public EmailService()
-            : this(new SmtpClient())
-        {
-        }
-
         public EmailService(SmtpClient smtp)
         {
             this._smtp = smtp;
