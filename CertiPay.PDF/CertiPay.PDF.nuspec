@@ -11,7 +11,7 @@
     <authors>CertiPay, Matt Wagner</authors>
     <owners>Matt Wagner</owners>
     <dependencies>
-      <dependency id="CertiPay.Common" version="0.0.22" />
+      <dependency id="CertiPay.Common" version="0.1.0" />
       <dependency id="ABCPdf" version="10.0.0.0" />
       <dependency id="ABCPdf.ABCGecko" version="10.0.0.0" />
     </dependencies>
