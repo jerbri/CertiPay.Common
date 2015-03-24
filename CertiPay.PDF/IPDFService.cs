@@ -114,7 +114,7 @@ namespace CertiPay.PDF
             /// See the ContentCount and the Timeout properties for how ABCpdf determines if a page is unavailable or invalid.
             /// </summary>
             /// <remarks>
-            /// ABCPDF defaults this to 5, but we change it to 0
+            /// ABCPDF defaults this to 5, but we change it to 1
             /// </remarks>
             public int RetryCount { get; set; }
 
