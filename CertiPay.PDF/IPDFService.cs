@@ -39,17 +39,23 @@ namespace CertiPay.PDF
             using (Doc pdf = new Doc())
             {
                 pdf.HtmlOptions.Engine = EngineType.Gecko;
-                pdf.HtmlOptions.AddLinks = true;
+
                 pdf.HtmlOptions.Timeout = (int)settings.Timeout.TotalMilliseconds;
                 pdf.HtmlOptions.RetryCount = settings.RetryCount;
-                pdf.HtmlOptions.UseScript = settings.UseScript;
+
                 pdf.HtmlOptions.PageCacheClear();
                 pdf.HtmlOptions.PageCacheEnabled = false;
+
+                pdf.HtmlOptions.AddForms = settings.UseForms;
+                pdf.HtmlOptions.AddLinks = settings.UseLinks;
+                pdf.HtmlOptions.UseScript = settings.UseScript;
 
                 pdf.Color.Red = 255;
                 pdf.Color.Green = 255;
                 pdf.Color.Blue = 255;
+
                 pdf.Rect.Inset(10, 10);
+
                 pdf.FillRect();
 
                 // If selected, make the PDF in landscape format
@@ -153,6 +159,16 @@ namespace CertiPay.PDF
             /// <remarks>
             public Boolean UseLandscapeOrientation { get; set; }
 
+            /// <summary>
+            /// Set this property to true to make forms active on rendered pages
+            /// </summary>
+            public Boolean UseForms { get; set; }
+
+            /// <summary>
+            /// Set this property to true to make links active on rendered pages
+            /// </summary>
+            public Boolean UseLinks { get; set; }
+
             public Settings()
             {
                 this.Uris = new List<String>();
@@ -161,6 +177,8 @@ namespace CertiPay.PDF
                 this.ContentCount = 36;
                 this.UseScript = true;
                 this.UseLandscapeOrientation = false;
+                this.UseForms = false;
+                this.UseLinks = false;
             }
         }
     }
