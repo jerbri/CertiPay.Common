@@ -39,18 +39,33 @@ namespace CertiPay.PDF
             using (Doc pdf = new Doc())
             {
                 pdf.HtmlOptions.Engine = EngineType.Gecko;
-                pdf.HtmlOptions.AddLinks = true;
+
                 pdf.HtmlOptions.Timeout = (int)settings.Timeout.TotalMilliseconds;
                 pdf.HtmlOptions.RetryCount = settings.RetryCount;
-                pdf.HtmlOptions.UseScript = settings.UseScript;
+
                 pdf.HtmlOptions.PageCacheClear();
                 pdf.HtmlOptions.PageCacheEnabled = false;
+
+                pdf.HtmlOptions.AddForms = settings.UseForms;
+                pdf.HtmlOptions.AddLinks = settings.UseLinks;
+                pdf.HtmlOptions.UseScript = settings.UseScript;
 
                 pdf.Color.Red = 255;
                 pdf.Color.Green = 255;
                 pdf.Color.Blue = 255;
+
                 pdf.Rect.Inset(10, 10);
+
                 pdf.FillRect();
+
+                // If selected, make the PDF in landscape format
+                if (settings.UseLandscapeOrientation)
+                {
+                    pdf.Transform.Rotate(90, pdf.MediaBox.Left, pdf.MediaBox.Bottom);
+                    pdf.Transform.Translate(pdf.MediaBox.Width, 0);
+                    pdf.Rect.Width = pdf.MediaBox.Height;
+                    pdf.Rect.Height = pdf.MediaBox.Width;
+                }
 
                 int imageId = 0;
 
@@ -138,6 +153,22 @@ namespace CertiPay.PDF
             /// </remarks>
             public Boolean UseScript { get; set; }
 
+            /// <summary>
+            /// Set this property to true to generate landscape oriented output files
+            /// </summary>
+            /// <remarks>
+            public Boolean UseLandscapeOrientation { get; set; }
+
+            /// <summary>
+            /// Set this property to true to make forms active on rendered pages
+            /// </summary>
+            public Boolean UseForms { get; set; }
+
+            /// <summary>
+            /// Set this property to true to make links active on rendered pages
+            /// </summary>
+            public Boolean UseLinks { get; set; }
+
             public Settings()
             {
                 this.Uris = new List<String>();
@@ -145,6 +176,9 @@ namespace CertiPay.PDF
                 this.RetryCount = 1;
                 this.ContentCount = 36;
                 this.UseScript = true;
+                this.UseLandscapeOrientation = false;
+                this.UseForms = false;
+                this.UseLinks = false;
             }
         }
     }

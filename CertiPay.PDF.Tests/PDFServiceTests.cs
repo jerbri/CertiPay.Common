@@ -21,5 +21,19 @@ namespace CertiPay.PDF.Tests
 
             File.WriteAllBytes("Output.pdf", output);
         }
+
+        [Test]
+        public void Should_Generate_Landscape_PDF()
+        {
+            IPDFService svc = new PDFService { };
+
+            byte[] output = svc.CreatePdf(new PDFService.Settings
+                {
+                    Uris = new[] { "http://google.com" },
+                    UseLandscapeOrientation = true
+                });
+
+            File.WriteAllBytes("Output-Landscape.pdf", output);
+        }
     }
 }
