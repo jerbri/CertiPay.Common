@@ -52,6 +52,15 @@ namespace CertiPay.PDF
                 pdf.Rect.Inset(10, 10);
                 pdf.FillRect();
 
+                // If selected, make the PDF in landscape format
+                if (settings.UseLandscapeOrientation)
+                {
+                    pdf.Transform.Rotate(90, pdf.MediaBox.Left, pdf.MediaBox.Bottom);
+                    pdf.Transform.Translate(pdf.MediaBox.Width, 0);
+                    pdf.Rect.Width = pdf.MediaBox.Height;
+                    pdf.Rect.Height = pdf.MediaBox.Width;
+                }
+
                 int imageId = 0;
 
                 // For each URI provided, add the result to the output doc
@@ -138,6 +147,12 @@ namespace CertiPay.PDF
             /// </remarks>
             public Boolean UseScript { get; set; }
 
+            /// <summary>
+            /// Set this property to true to generate landscape oriented output files
+            /// </summary>
+            /// <remarks>
+            public Boolean UseLandscapeOrientation { get; set; }
+
             public Settings()
             {
                 this.Uris = new List<String>();
@@ -145,6 +160,7 @@ namespace CertiPay.PDF
                 this.RetryCount = 1;
                 this.ContentCount = 36;
                 this.UseScript = true;
+                this.UseLandscapeOrientation = false;
             }
         }
     }
