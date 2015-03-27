@@ -28,3 +28,16 @@ i.e. `Install-Package CertiPay.Common`
 ## Contributing
 
 Please submit a pull request or issue to the GitHub repository with the appropriate context and tests, if possible.
+
+## CertiPay.PDF
+
+CertiPay.PDF takes a dependency on ABCPDF.Gecko which will end up copying a lot of files into your project.
+
+Instead, you can remove them and reference them directly from the package folder is your project file.
+
+```
+<Content Include="..\packages\ABCpdf.ABCGecko.10.0.0.0\content\XULRunner21_0\**\*.*">
+    <Link>XULRunner21_0\%(RecursiveDir)\%(FileName)%(Extension)</Link>
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+</Content>
+```
