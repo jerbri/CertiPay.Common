@@ -11,6 +11,11 @@ namespace CertiPay.PDF
         /// Return the data for a PDF representing the provided settings, including a list of URIs
         /// </summary>
         byte[] CreatePdf(PDFService.Settings settings);
+
+        /// <summary>
+        /// Returns information about the license being used by the PDF generator
+        /// </summary>
+        String LicenseDescription { get; }
     }
 
     public class PDFService : IPDFService
@@ -22,11 +27,13 @@ namespace CertiPay.PDF
 
         public PDFService(String abcPdfLicenseKey)
         {
-            if (XSettings.LicenseType != LicenseType.Professional || !XSettings.LicenseValid)
+            if (XSettings.LicenseType != LicenseType.Professional)
             {
                 XSettings.InstallLicense(abcPdfLicenseKey);
             }
         }
+
+        public String LicenseDescription { get { return XSettings.LicenseDescription; } }
 
         public byte[] CreatePdf(PDFService.Settings settings)
         {

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.IO;
 
 namespace CertiPay.PDF.Tests
@@ -62,6 +63,20 @@ namespace CertiPay.PDF.Tests
             });
 
             File.WriteAllBytes("Output-Links.pdf", output);
+        }
+
+        [Test, Ignore]
+        public void Should_Install_and_Use_License_Key()
+        {
+            IPDFService svc = new PDFService(abcPdfLicenseKey: "put-license-to-check-here") { };
+
+            byte[] output = svc.CreatePdf(new PDFService.Settings
+            {
+                Uris = new[] { "http://google.com" },
+                UseLinks = true
+            });
+
+            File.WriteAllBytes("Output-WithLicense.pdf", output);
         }
     }
 }
