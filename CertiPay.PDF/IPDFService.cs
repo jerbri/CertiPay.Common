@@ -1,5 +1,4 @@
-﻿using CertiPay.Common.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebSupergoo.ABCpdf10;
@@ -16,8 +15,6 @@ namespace CertiPay.PDF
 
     public class PDFService : IPDFService
     {
-        private static readonly ILog Log = LogManager.GetLogger<PDFService>();
-
         public PDFService()
         {
             // Run without installing a license key
