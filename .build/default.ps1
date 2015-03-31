@@ -21,7 +21,7 @@ if(!$Configuration) { $Configuration = $env:Configuration }
 if(!$Configuration) { $Configuration = "Release" }
 
 if(!$Version) { $Version = $env:APPVEYOR_BUILD_VERSION }
-if(!$Version) { $Version = "0.2.$BuildNumber" }
+if(!$Version) { $Version = "0.3.$BuildNumber" }
 
 Import-Module "$Here\Common" -DisableNameChecking
 
