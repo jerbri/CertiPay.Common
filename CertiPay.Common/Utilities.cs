@@ -3,24 +3,36 @@
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
     public static class Utilities
     {
         /// <summary>
-        /// Returns the AssemblyInformationalVersion attribute of the executing library (not CertiPay.Common)
+        /// Returns the assembly version of the assembly formatted as Major.Minor (build Build#)
         /// </summary>
-        [MethodImplAttribute(MethodImplOptions.NoInlining)]
-        public static String Version()
+        public static String AssemblyVersion<T>()
         {
-            AssemblyInformationalVersionAttribute attribute =
-                Assembly
-                .GetCallingAssembly()
+            var version =
+                typeof(T)
+                .Assembly
+                .GetName()
+                .Version;
+
+            return String.Format("{0}.{1} (build {2})", version.Major, version.Minor, version.Build);
+        }
+
+        /// <summary>
+        /// Returns the assembly informational version of the type, or assembly version if not available
+        /// </summary>
+        public static String Version<T>()
+        {
+            var attribute =
+                typeof(T)
+                .Assembly
                 .GetCustomAttributes(false)
                 .OfType<AssemblyInformationalVersionAttribute>()
                 .FirstOrDefault();
 
-            return attribute == null ? "Unknown" : attribute.InformationalVersion;
+            return attribute == null ? AssemblyVersion<T>() : attribute.InformationalVersion;
         }
     }
 }

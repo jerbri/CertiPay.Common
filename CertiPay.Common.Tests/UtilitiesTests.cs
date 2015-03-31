@@ -7,7 +7,7 @@ namespace CertiPay.Common.Tests
         [Test]
         public void ShouldMatchVersionOfCaller()
         {
-            Assert.AreEqual("0.9.9.local", Utilities.Version());
+            Assert.AreEqual("0.9.9.local", Utilities.Version<UtilitiesTests>());
         }
     }
 }

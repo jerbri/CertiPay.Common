@@ -23,6 +23,8 @@
             LogFilePath = ConfigurationManager.AppSettings["LogFilePath"].TrimToNull() ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
 
             LogLevel = new LoggingLevelSwitch((LogEventLevel)Enum.Parse(typeof(LogEventLevel), value: ConfigurationManager.AppSettings["LogLevel"].TrimToNull() ?? "Information", ignoreCase: true));
+
+            Version = Utilities.Version<LogManager>();
         }
 
         /// <summary>
@@ -40,6 +42,13 @@
         /// Pulls from AppSettings["Application"], defaults to Unknown
         /// </summary>
         public static String ApplicationName { get; set; }
+
+        /// <summary>
+        /// The application version number, included in the logs for debugging purposes.
+        ///
+        /// Pulls from Utilities.Version(), defaults to the version of CertiPay.Common
+        /// </summary>
+        public static String Version { get; set; }
 
         /// <summary>
         /// Adjusts the logging level for the entire log system.
@@ -80,7 +89,7 @@
                 .Enrich.WithMachineName()
 
                 .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
-                .Enrich.WithProperty("Version", Utilities.Version())
+                .Enrich.WithProperty("Version", LogManager.Version)
                 .Enrich.WithProperty("Environment", EnvUtil.Current)
 
                 .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)
