@@ -1,9 +1,6 @@
 ﻿namespace CertiPay.Common.Logging
 {
     using CertiPay.Common;
-    using Serilog;
-    using Serilog.Core;
-    using Serilog.Events;
     using System;
     using System.Configuration;
     using System.Diagnostics;
@@ -23,7 +20,9 @@
 
             LogFilePath = ConfigurationManager.AppSettings["LogFilePath"].TrimToNull() ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
 
-            LogLevel = new LoggingLevelSwitch((LogEventLevel)Enum.Parse(typeof(LogEventLevel), value: ConfigurationManager.AppSettings["LogLevel"].TrimToNull() ?? "Information", ignoreCase: true));
+            var logLevelConfig = ConfigurationManager.AppSettings["LogLevel"].TrimToNull() ?? "Info";
+
+            LogLevel = (LogLevel)Enum.Parse(typeof(LogLevel), logLevelConfig, true);
 
             Version = Utilities.Version<LogManager>();
         }
@@ -54,73 +53,51 @@
         /// <summary>
         /// Adjusts the logging level for the entire log system.
         ///
-        /// Pulls from AppSettings["LogLevel"], dsefaults to Information.
-        /// Possible values are Verbose, Debug, Information, Warning, Error, Fatal
+        /// Pulls from AppSettings["LogLevel"], dsefaults to Info.
+        /// Possible values are Verbose, Debug, Info, Warn, Error, Fatal
         /// </summary>
-        public static LoggingLevelSwitch LogLevel { get; private set; }
+        public static LogLevel LogLevel { get; private set; }
 
+        /// <summary>
+        /// Returns a configured logger for the current class
+        /// </summary>
         public static ILog GetCurrentClassLogger()
         {
             var stackFrame = new StackFrame(1, false);
+
             return GetLogger(stackFrame.GetMethod().DeclaringType);
         }
 
+        /// <summary>
+        /// Returns a configured logger for the given type
+        /// </summary>
         public static ILog GetLogger<T>()
         {
             return GetLogger(typeof(T));
         }
 
+        /// <summary>
+        /// Returns a configured logger for the given type
+        /// </summary>
         public static ILog GetLogger(Type type)
         {
             return GetLogger(type.FullName);
         }
 
+        /// <summary>
+        /// Returns a configured logger for the given key
+        /// </summary>
         public static ILog GetLogger(String key)
         {
             // TODO Get configured logger, or else the default (Serilog)
 
-            return new SerilogLogger(logger.ForContext("name", key));
+            var serilog =
+                SerilogManager
+                .Configuration
+                .CreateLogger()
+                .ForContext("name", key);
+
+            return new SerilogManager(serilog);
         }
-
-        internal static ILogger logger { get { return _logger.Value; } }
-
-        private static Lazy<ILogger> _logger = new Lazy<ILogger>(() =>
-        {
-            // Using a lazy<t> here ensures that this is only done once, thread-safe, on first-use
-            // After the logmanager is used, the properties such as path, version, appname, and environment
-            // name are all set for the duration i think?
-
-            Log.Logger =
-                new LoggerConfiguration()
-
-                .MinimumLevel.ControlledBy(LogManager.LogLevel)
-
-                .Enrich.WithMachineName()
-
-                .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
-                .Enrich.WithProperty("Version", LogManager.Version)
-                .Enrich.WithProperty("Environment", EnvUtil.Current)
-
-                .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)
-
-                .WriteTo.RollingFile(
-                    pathFormat: LogFilePath,
-                    outputTemplate: "{Timestamp} [{Level}] ({Version} on {MachineName}) {Message}{NewLine}{Exception}"
-                    )
-
-                //.WriteTo.Sink(new RollingFileSink
-                //(
-                //    pathFormat: LogFilePath,
-                //    textFormatter: new JsonFormatter(), // use json so we an scoop these up via logstash?
-                //    fileSizeLimitBytes: null, // default to 1gb
-                //    retainedFileCountLimit: 31 // default to 31
-                //))
-
-                // .WriteTo ElasticSearch("settings", , restrictedToMinimumLevel: LogEventLevel.Debug)
-
-                .CreateLogger();
-
-            return Log.Logger;
-        });
     }
 }

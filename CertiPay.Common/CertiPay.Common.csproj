@@ -68,7 +68,7 @@
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\MetricLoggingExtensions.cs" />
-    <Compile Include="Logging\SerilogLogger.cs" />
+    <Compile Include="Logging\SerilogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="WorkQueue\CompletedWorkItem.cs" />
