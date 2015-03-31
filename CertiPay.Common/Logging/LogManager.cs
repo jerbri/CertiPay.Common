@@ -89,15 +89,7 @@
         /// </summary>
         public static ILog GetLogger(String key)
         {
-            // TODO Get configured logger, or else the default (Serilog)
-
-            var serilog =
-                SerilogManager
-                .Configuration
-                .CreateLogger()
-                .ForContext("name", key);
-
-            return new SerilogManager(serilog);
+            return new SerilogManager(key);
         }
     }
 }

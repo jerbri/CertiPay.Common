@@ -8,46 +8,50 @@
     {
         public static Serilog.LoggerConfiguration Configuration { get; set; }
 
+        private readonly Lazy<Serilog.ILogger> _log = new Lazy<Serilog.ILogger>(() => Configuration.CreateLogger());
+
         static SerilogManager()
         {
             // Provide a default rolling file and console configuration for Serilog
 
+            // Additional configuration or sinks can be added by updating the SeriLogManager.Configuration property
+
             Configuration =
-                new LoggerConfiguration()
+                    new LoggerConfiguration()
 
-                .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
+                    .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
 
-                .Enrich.WithMachineName()
-                .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
-                .Enrich.WithProperty("Version", LogManager.Version)
-                .Enrich.WithProperty("Environment", EnvUtil.Current)
+                    .Enrich.WithMachineName()
+                    .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
+                    .Enrich.WithProperty("Version", LogManager.Version)
+                    .Enrich.WithProperty("Environment", EnvUtil.Current)
 
-                .WriteTo.ColoredConsole(restrictedToMinimumLevel: LogEventLevel.Debug)
+                    .WriteTo.ColoredConsole()
 
-                .WriteTo.RollingFile(
-                    pathFormat: LogManager.LogFilePath,
-                    outputTemplate: "{Timestamp} [{Level}] ({Version} on {MachineName}) {Message}{NewLine}{Exception}"
-                    );
+                    .WriteTo.RollingFile(
+                        pathFormat: LogManager.LogFilePath,
+                        outputTemplate: "{Timestamp} [{Level}] ({Version} on {MachineName}) {Message}{NewLine}{Exception}"
+                        );
         }
 
-        private readonly Serilog.ILogger _log;
+        private readonly String _key;
 
-        public SerilogManager(Serilog.ILogger log)
+        internal SerilogManager(String key)
         {
-            _log = log;
+            _key = key;
         }
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            _log.Write(GetLevel(level), messageTemplate, propertyValues);
+            _log.Value.ForContext("name", _key).Write(GetLevel(level), messageTemplate, propertyValues);
         }
 
         public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            _log.Write(GetLevel(level), exception, messageTemplate, propertyValues);
+            _log.Value.ForContext("name", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
         }
 
-        public static LogEventLevel GetLevel(LogLevel level)
+        internal static LogEventLevel GetLevel(LogLevel level)
         {
             switch (level)
             {
