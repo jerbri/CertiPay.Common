@@ -58,6 +58,9 @@
                 case LogLevel.Fatal:
                     return LogEventLevel.Fatal;
 
+                case LogLevel.Error:
+                    return LogEventLevel.Error;
+
                 case LogLevel.Warn:
                     return LogEventLevel.Warning;
 

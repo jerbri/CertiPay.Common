@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace CertiPay.Common.Logging
+﻿namespace CertiPay.Common.Logging
 {
+    using System;
+
     /// <summary>
     /// Provide usability extensions for working with the ILog implementations
     /// </summary>
@@ -35,14 +35,14 @@ namespace CertiPay.Common.Logging
             logger.Log<TException>(LogLevel.Info, messageTemplate, exception, propertyValues);
         }
 
-        public static void Warning(this ILog logger, string messageTemplate, params object[] propertyValues)
+        public static void Warn(this ILog logger, string messageTemplate, params object[] propertyValues)
         {
             logger.Log(LogLevel.Warn, messageTemplate, propertyValues);
         }
 
         public static void WarnException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            logger.Log<TException>(LogLevel.Debug, messageTemplate, exception, propertyValues);
+            logger.Log<TException>(LogLevel.Warn, messageTemplate, exception, propertyValues);
         }
 
         public static void Error(this ILog logger, string messageTemplate, params object[] propertyValues)
