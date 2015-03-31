@@ -6,6 +6,7 @@
     using Serilog.Events;
     using System;
     using System.Configuration;
+    using System.Diagnostics;
 
     /// <summary>
     /// A class to handle the configuration and routing of log entries to various sinks, so that
@@ -58,18 +59,26 @@
         /// </summary>
         public static LoggingLevelSwitch LogLevel { get; private set; }
 
+        public static ILog GetCurrentClassLogger()
+        {
+            var stackFrame = new StackFrame(1, false);
+            return GetLogger(stackFrame.GetMethod().DeclaringType);
+        }
+
         public static ILog GetLogger<T>()
         {
-            return new SerilogLogger(logger.ForContext<T>());
+            return GetLogger(typeof(T));
         }
 
         public static ILog GetLogger(Type type)
         {
-            return new SerilogLogger(logger.ForContext(type));
+            return GetLogger(type.FullName);
         }
 
         public static ILog GetLogger(String key)
         {
+            // TODO Get configured logger, or else the default (Serilog)
+
             return new SerilogLogger(logger.ForContext("name", key));
         }
 

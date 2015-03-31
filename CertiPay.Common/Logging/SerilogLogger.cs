@@ -13,59 +13,64 @@
             _log = log;
         }
 
-        public void Verbose(string messageTemplate, params object[] propertyValues)
+        public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            _log.Verbose(messageTemplate, propertyValues);
+            switch (level)
+            {
+                case LogLevel.Verbose:
+                    _log.Verbose(messageTemplate, propertyValues);
+                    break;
+
+                case LogLevel.Debug:
+                    _log.Debug(messageTemplate, propertyValues);
+                    break;
+
+                case LogLevel.Info:
+                    _log.Information(messageTemplate, propertyValues);
+                    break;
+
+                case LogLevel.Warn:
+                    _log.Warning(messageTemplate, propertyValues);
+                    break;
+
+                case LogLevel.Error:
+                    _log.Error(messageTemplate, propertyValues);
+                    break;
+
+                case LogLevel.Fatal:
+                    _log.Fatal(messageTemplate, propertyValues);
+                    break;
+            }
         }
 
-        public void Debug(string messageTemplate, params object[] propertyValues)
+        public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            Debug(null, messageTemplate, propertyValues);
-        }
+            switch (level)
+            {
+                case LogLevel.Verbose:
+                    _log.Verbose(exception, messageTemplate, propertyValues);
+                    break;
 
-        public void Debug(Exception exception, string messageTemplate, params object[] propertyValues)
-        {
-            _log.Debug(exception, messageTemplate, propertyValues);
-        }
+                case LogLevel.Debug:
+                    _log.Debug(exception, messageTemplate, propertyValues);
+                    break;
 
-        public void Info(string messageTemplate, params object[] propertyValues)
-        {
-            Info(null, messageTemplate, propertyValues);
-        }
+                case LogLevel.Info:
+                    _log.Information(exception, messageTemplate, propertyValues);
+                    break;
 
-        public void Info(Exception exception, string messageTemplate, params object[] propertyValues)
-        {
-            _log.Information(exception, messageTemplate, propertyValues);
-        }
+                case LogLevel.Warn:
+                    _log.Warning(exception, messageTemplate, propertyValues);
+                    break;
 
-        public void Warning(string messageTemplate, params object[] propertyValues)
-        {
-            Warning(null, messageTemplate, propertyValues);
-        }
+                case LogLevel.Error:
+                    _log.Error(exception, messageTemplate, propertyValues);
+                    break;
 
-        public void Warning(Exception exception, string messageTemplate, params object[] propertyValues)
-        {
-            _log.Warning(exception, messageTemplate, propertyValues);
-        }
-
-        public void Error(string messageTemplate, params object[] propertyValues)
-        {
-            Error(null, messageTemplate, propertyValues);
-        }
-
-        public void Error(Exception exception, string messageTemplate, params object[] propertyValues)
-        {
-            _log.Error(exception, messageTemplate, propertyValues);
-        }
-
-        public void Fatal(string messageTemplate, params object[] propertyValues)
-        {
-            Fatal(null, messageTemplate, propertyValues);
-        }
-
-        public void Fatal(Exception exception, string messageTemplate, params object[] propertyValues)
-        {
-            _log.Fatal(exception, messageTemplate, propertyValues);
+                case LogLevel.Fatal:
+                    _log.Fatal(exception, messageTemplate, propertyValues);
+                    break;
+            }
         }
     }
 }

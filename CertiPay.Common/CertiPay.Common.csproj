@@ -64,6 +64,8 @@
     <Compile Include="EnvUtil.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\LoggerExtensions.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Logging\MetricLoggingExtensions.cs" />
     <Compile Include="Logging\SerilogLogger.cs" />
