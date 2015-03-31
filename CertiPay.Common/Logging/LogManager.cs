@@ -46,7 +46,7 @@
         /// <summary>
         /// The application version number, included in the logs for debugging purposes.
         ///
-        /// Pulls from Utilities.Version(), defaults to the version of CertiPay.Common
+        /// Defaults to the version of CertiPay.Common package
         /// </summary>
         public static String Version { get; set; }
 
