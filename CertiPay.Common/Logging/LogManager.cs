@@ -4,6 +4,7 @@
     using System;
     using System.Configuration;
     using System.Diagnostics;
+    using System.Reflection;
 
     /// <summary>
     /// A class to handle the configuration and routing of log entries to various sinks, so that
@@ -63,9 +64,34 @@
         /// </summary>
         public static ILog GetCurrentClassLogger()
         {
-            var stackFrame = new StackFrame(1, false);
+            // The previous implementation from the RavenDb Logging abstractions broke in some unforseen situations
+            // This implementation is from the NLog LogManager and appears more robust
 
-            return GetLogger(stackFrame.GetMethod().DeclaringType);
+            string className;
+            Type declaringType;
+            int framesToSkip = 1;
+
+            do
+            {
+                StackFrame frame = new StackFrame(framesToSkip, false);
+
+                MethodBase method = frame.GetMethod();
+
+                declaringType = method.DeclaringType;
+
+                if (declaringType == null)
+                {
+                    className = method.Name;
+                    break;
+                }
+
+                framesToSkip++;
+
+                className = declaringType.FullName;
+            } 
+            while (declaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase));
+
+            return GetLogger(className);
         }
 
         /// <summary>
