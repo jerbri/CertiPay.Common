@@ -1,4 +1,5 @@
-﻿using StackExchange.Redis;
+﻿using CertiPay.Common.Logging;
+using StackExchange.Redis;
 using System;
 using System.Configuration;
 
@@ -6,6 +7,8 @@ namespace CertiPay.Common.Redis
 {
     public class RedisConnection
     {
+        private static readonly ILog Log = LogManager.GetLogger<RedisConnection>();
+
         // Note: I'm writing this for redis without clustering
 
         private readonly Lazy<ConnectionMultiplexer> _connectionManager;
@@ -32,6 +35,8 @@ namespace CertiPay.Common.Redis
             };
 
             options.EndPoints.Add(_host, _port);
+
+            Log.Debug("Configured RedisConnection for {host}:{port} db {defaultDb}", host, port, defaultDb);
 
             this._connectionManager = new Lazy<ConnectionMultiplexer>(() => ConnectionMultiplexer.Connect(options));
         }
