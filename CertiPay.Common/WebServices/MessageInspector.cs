@@ -8,6 +8,15 @@ namespace CertiPay.Common.WebServices
 {
     /// <summary>
     /// Behavior that can be added to the WCF client to getting request and response raw XML.
+    /// 
+    /// Usage: 
+    /// 
+    ///     Action<Message> OnSend = (message) => Log.Info(message.ToString());
+    ///     Action<Message> OnReceive = (message) => Log.Info(message.ToString());
+    /// 
+    ///     var client = new ServiceAPI.ServiceAPISoapClient(GetBinding(), new EndpointAddress(Url));
+    ///  
+    ///     client.Endpoint.EndpointBehaviors.Add(new MessageInspectorBehavior(OnSend, OnReceive));
     /// </summary>
     public class MessageInspectorBehavior : IEndpointBehavior
     {
