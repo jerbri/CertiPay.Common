@@ -76,6 +76,7 @@
     <Compile Include="WebServices\MessageInspector.cs" />
     <Compile Include="WorkQueue\CompletedWorkItem.cs" />
     <Compile Include="WorkQueue\FailedWorkItem.cs" />
+    <Compile Include="WorkQueue\InMemoryQueueManager.cs" />
     <Compile Include="WorkQueue\IQueueManager.cs" />
     <Compile Include="WorkQueue\Queue.cs" />
     <Compile Include="Redis\RedisCache.cs" />
