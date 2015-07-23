@@ -12,7 +12,7 @@
     <owners>Matt Wagner</owners>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="6.0.8" />
-      <dependency id="StackExchange.Redis" version="1.0.414" />
+      <dependency id="StackExchange.Redis" version="1.0.481" />
       <dependency id="Serilog" version="1.5.9" />
     </dependencies>
   </metadata>
