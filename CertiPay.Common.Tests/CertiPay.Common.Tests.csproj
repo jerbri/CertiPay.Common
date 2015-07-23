@@ -58,6 +58,7 @@
     <Compile Include="Redis\RedisCacheTests.cs" />
     <Compile Include="Redis\RedisQueueManagerTests.cs" />
     <Compile Include="UtilitiesTests.cs" />
+    <Compile Include="WorkQueue\InMemoryQueueManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CertiPay.Common\CertiPay.Common.csproj">
