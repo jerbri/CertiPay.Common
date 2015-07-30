@@ -5,26 +5,23 @@
     using SerilogWeb.Classic.Enrichers;
     using System;
 
-    public class SerilogManager : ILog
+    internal class SerilogManager : ILog
     {
-        public static Serilog.LoggerConfiguration Configuration { get; set; }
-
-        private readonly Lazy<Serilog.ILogger> _log = new Lazy<Serilog.ILogger>(() => Configuration.CreateLogger());
-
-        static SerilogManager()
+        private static readonly Lazy<ILogger> logger = new Lazy<ILogger>(() =>
         {
             // Provide a default rolling file and console configuration for Serilog
+            // User can configure application settings to add on properties or sinks
 
-            // Additional configuration or sinks can be added by updating the SeriLogManager.Configuration property
-
-            Configuration =
-                    new LoggerConfiguration()
+            return
+                new LoggerConfiguration()
                     .ReadFrom.AppSettings()
 
                     .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
 
                     .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
+
+                    // Note: These properties come from the application config file
                     .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
                     .Enrich.WithProperty("Version", LogManager.Version)
                     .Enrich.WithProperty("Environment", EnvUtil.Current)
@@ -40,8 +37,10 @@
 
                     .WriteTo.ColoredConsole()
 
-                    .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath);
-        }
+                    .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath)
+
+                .CreateLogger();
+        });
 
         private readonly String _key;
 
@@ -52,12 +51,12 @@
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            _log.Value.ForContext("name", _key).Write(GetLevel(level), messageTemplate, propertyValues);
+            logger.Value.ForContext("name", _key).Write(GetLevel(level), messageTemplate, propertyValues);
         }
 
         public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            _log.Value.ForContext("name", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
+            logger.Value.ForContext("name", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
         }
 
         internal static LogEventLevel GetLevel(LogLevel level)
