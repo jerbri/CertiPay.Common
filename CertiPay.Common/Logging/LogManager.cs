@@ -33,7 +33,7 @@
         /// of the file date. E.g. "Logs\myapp-{Date}.log" will result in log files such
         /// as "Logs\myapp-2013-10-20.log", "Logs\myapp-2013-10-21.log" and so on..
         ///
-        /// Pulls from AppSettings["LogFilePath"], defaults to c:\Logs\{Environment}\{Application}\-{Date}.log
+        /// Pulls from AppSettings["LogFilePath"], defaults to c:\Logs\{Environment}\{Application}\{Date}.log
         /// </summary>
         public static String LogFilePath { get; set; }
 
