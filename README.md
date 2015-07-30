@@ -29,6 +29,21 @@ i.e. `Install-Package CertiPay.Common`
 
 Please submit a pull request or issue to the GitHub repository with the appropriate context and tests, if possible.
 
+## CertiPay.Common.Logging
+
+CertiPay.Common.Logging provides an abstraction similar to `Common.Logging`. By default it logs to `C:\Logs\{Environment}\{Application}\{Data}.log`, but can be configured.
+
+Under the covers, it uses Serilog for it's logging. To enable additional sinks, use the app.config like below:
+
+```
+    <add key="serilog:using" value="Serilog.Sinks.Email" />
+    <add key="serilog:write-to:Email.toEmail" value="Errors@CertiPay.com" />
+    <add key="serilog:write-to:Email.fromEmail" value="Errors@CertiPay.com" />
+    <!-- An empty value here will drop back to using system.net.mailSettings.smtp.network.host -->
+    <!-- However, not including this key will cause it to fail to send altogether -->
+    <add key="serilog:write-to:Email.mailServer" value="" />
+```
+
 ## CertiPay.PDF
 
 CertiPay.PDF takes a dependency on ABCPDF.Gecko which will end up copying a lot of files into your project.
