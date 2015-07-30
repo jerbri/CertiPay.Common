@@ -2,6 +2,7 @@
 {
     using Serilog;
     using Serilog.Events;
+    using SerilogWeb.Classic.Enrichers;
     using System;
 
     public class SerilogManager : ILog
@@ -21,10 +22,20 @@
 
                     .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
 
+                    .Enrich.FromLogContext()
                     .Enrich.WithMachineName()
                     .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
                     .Enrich.WithProperty("Version", LogManager.Version)
                     .Enrich.WithProperty("Environment", EnvUtil.Current)
+
+                    // Note: These enrichers grab info off of the HttpRequest.Context if it's available, otherwise are no-ops
+                    .Enrich.With<HttpRequestIdEnricher>()
+                    .Enrich.With<HttpSessionIdEnricher>()
+                    .Enrich.With<HttpRequestRawUrlEnricher>()
+                    .Enrich.With<HttpRequestUrlReferrerEnricher>()
+                    .Enrich.With<UserNameEnricher>()
+                    .Enrich.With<HttpRequestClientHostIPEnricher>()
+                    .Enrich.With<HttpRequestUserAgentEnricher>()
 
                     .WriteTo.ColoredConsole()
 
