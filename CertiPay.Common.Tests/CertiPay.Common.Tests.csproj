@@ -45,6 +45,7 @@
       <HintPath>..\packages\Serilog.Sinks.Email.1.5.13\lib\net45\Serilog.Sinks.Email.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

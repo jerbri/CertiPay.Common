@@ -1,5 +1,7 @@
 ﻿using CertiPay.Common.Logging;
 using NUnit.Framework;
+using Serilog;
+using System.Configuration;
 
 namespace CertiPay.Common.Tests.Logging
 {
@@ -11,20 +13,10 @@ namespace CertiPay.Common.Tests.Logging
             LogManager.GetCurrentClassLogger().Warn("This is some basic text output!");
         }
 
-        //[Test]
-        //public void Ensure_Can_Write_To_Email_Sinks()
-        //{
-        //    SerilogManager.Configuration =
-        //        SerilogManager
-        //        .Configuration
-        //        .WriteTo
-        //        .Email(new EmailConnectionInfo
-        //        {
-        //            FromEmail = "Errors@Certipay.com",
-        //            ToEmail = "Errors@CertiPay.com",
-        //        });
-
-        //    LogManager.GetCurrentClassLogger().Error("An error occurred while running this test!");
-        //}
+        [Test]
+        public void Ensure_Can_Write_To_Email_Sinks()
+        {
+            LogManager.GetCurrentClassLogger().Fatal("An error occurred while running this test!");
+        }
     }
 }
