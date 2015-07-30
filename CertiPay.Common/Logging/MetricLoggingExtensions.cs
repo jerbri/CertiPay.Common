@@ -11,11 +11,11 @@
     /// </remarks>
     public static class MetricLoggingExtensions
     {
-        public const String Timed_Operation_Start_Template = "Starting Operation {TimedOperationId}: {TimedOperationDescription}";
+        private const String Timer_Start = "Starting Operation {TimedOperationId}: {TimedOperationDescription}";
 
-        public const String Timed_Operation_Finish_Template = "Completed Operation {TimedOperationId}: {TimedOperationDescription} in {TimedOperationElapsed} ({TimedOperationElapsedInMs} ms)";
+        private const String Timer_Finish = "Completed Operation {TimedOperationId}: {TimedOperationDescription} in {TimedOperationElapsed} ({TimedOperationElapsedInMs} ms)";
 
-        public const String Timed_Operation_Warning_Template = "Operation {TimedOperationId}: {TimedOperationDescription} exceeded the limit of {WarningLimit} by completing in {TimedOperationElapsed}  ({TimedOperationElapsedInMs} ms)";
+        private const String Timer_Warning = "Operation {TimedOperationId}: {TimedOperationDescription} exceeded the limit of {WarningLimit} by completing in {TimedOperationElapsed}  ({TimedOperationElapsedInMs} ms)";
 
         /// <summary>
         /// Track the execution time of a particular block of code for debugging purposes with the given description and identifier.
@@ -71,7 +71,7 @@
                 _description = description;
                 _level = level;
 
-                _logger.Log(_level, Timed_Operation_Start_Template, _identifier, _description);
+                _logger.Log(_level, Timer_Start, _identifier, _description);
 
                 _sw = Stopwatch.StartNew();
             }
@@ -82,11 +82,11 @@
 
                 if (_warnIfExceeds.HasValue && _sw.Elapsed > _warnIfExceeds.Value)
                 {
-                    _logger.Log(LogLevel.Warn, Timed_Operation_Warning_Template, _identifier, _description, _warnIfExceeds.Value, _sw.Elapsed, _sw.ElapsedMilliseconds);
+                    _logger.Log(LogLevel.Warn, Timer_Warning, _identifier, _description, _warnIfExceeds.Value, _sw.Elapsed, _sw.ElapsedMilliseconds);
                 }
                 else
                 {
-                    _logger.Log(_level, Timed_Operation_Finish_Template, _identifier, _description, _sw.Elapsed, _sw.ElapsedMilliseconds);
+                    _logger.Log(_level, Timer_Finish, _identifier, _description, _sw.Elapsed, _sw.ElapsedMilliseconds);
                 }
             }
         }
