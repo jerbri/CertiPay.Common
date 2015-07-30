@@ -19,6 +19,7 @@
 
             Configuration =
                     new LoggerConfiguration()
+                    .ReadFrom.AppSettings()
 
                     .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
 
@@ -39,10 +40,7 @@
 
                     .WriteTo.ColoredConsole()
 
-                    .WriteTo.RollingFile(
-                        pathFormat: LogManager.LogFilePath,
-                        outputTemplate: "{Timestamp} [{Level}] ({Version} on {MachineName}) {Message}{NewLine}{Exception}"
-                        );
+                    .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath);
         }
 
         private readonly String _key;
