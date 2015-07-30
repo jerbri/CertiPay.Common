@@ -11,35 +11,37 @@
         {
             // Provide a default rolling file and console configuration for Serilog
             // User can configure application settings to add on properties or sinks
+            // This ensures that the configuration is done once before use
 
             return
-                new LoggerConfiguration()
-                    .ReadFrom.AppSettings()
+                Serilog.Log.Logger =
+                    new LoggerConfiguration()
+                        .ReadFrom.AppSettings()
 
-                    .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
+                        .MinimumLevel.Is(GetLevel(LogManager.LogLevel))
 
-                    .Enrich.FromLogContext()
-                    .Enrich.WithMachineName()
+                        .Enrich.FromLogContext()
+                        .Enrich.WithMachineName()
 
-                    // Note: These properties come from the application config file
-                    .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
-                    .Enrich.WithProperty("Version", LogManager.Version)
-                    .Enrich.WithProperty("Environment", EnvUtil.Current)
+                        // Note: These properties come from the application config file
+                        .Enrich.WithProperty("ApplicationName", LogManager.ApplicationName)
+                        .Enrich.WithProperty("Version", LogManager.Version)
+                        .Enrich.WithProperty("Environment", EnvUtil.Current)
 
-                    // Note: These enrichers grab info off of the HttpRequest.Context if it's available, otherwise are no-ops
-                    .Enrich.With<HttpRequestIdEnricher>()
-                    .Enrich.With<HttpSessionIdEnricher>()
-                    .Enrich.With<HttpRequestRawUrlEnricher>()
-                    .Enrich.With<HttpRequestUrlReferrerEnricher>()
-                    .Enrich.With<UserNameEnricher>()
-                    .Enrich.With<HttpRequestClientHostIPEnricher>()
-                    .Enrich.With<HttpRequestUserAgentEnricher>()
+                        // Note: These enrichers grab info off of the HttpRequest.Context if it's available, otherwise are no-ops
+                        .Enrich.With<HttpRequestIdEnricher>()
+                        .Enrich.With<HttpSessionIdEnricher>()
+                        .Enrich.With<HttpRequestRawUrlEnricher>()
+                        .Enrich.With<HttpRequestUrlReferrerEnricher>()
+                        .Enrich.With<UserNameEnricher>()
+                        .Enrich.With<HttpRequestClientHostIPEnricher>()
+                        .Enrich.With<HttpRequestUserAgentEnricher>()
 
-                    .WriteTo.ColoredConsole()
+                        .WriteTo.ColoredConsole()
 
-                    .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath)
+                        .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath)
 
-                .CreateLogger();
+                        .CreateLogger();
         });
 
         private readonly String _key;
