@@ -54,7 +54,7 @@
         /// <summary>
         /// Adjusts the logging level for the entire log system.
         ///
-        /// Pulls from AppSettings["LogLevel"], dsefaults to Info.
+        /// Pulls from AppSettings["LogLevel"], defaults to Info.
         /// Possible values are Verbose, Debug, Info, Warn, Error, Fatal
         /// </summary>
         public static LogLevel LogLevel { get; private set; }
