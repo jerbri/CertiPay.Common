@@ -39,7 +39,11 @@
 
                         .WriteTo.ColoredConsole()
 
-                        .WriteTo.RollingFile(pathFormat: LogManager.LogFilePath)
+                        .WriteTo.RollingFile(
+                            // Environment, ApplicationName, and date are already in the folder\file name
+                            outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level}] [{Logger}] {Message}{NewLine}{Exception}",
+                            pathFormat: LogManager.LogFilePath
+                        )
 
                         .CreateLogger();
         });
@@ -53,12 +57,12 @@
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            logger.Value.ForContext("name", _key).Write(GetLevel(level), messageTemplate, propertyValues);
+            logger.Value.ForContext("Logger", _key).Write(GetLevel(level), messageTemplate, propertyValues);
         }
 
         public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            logger.Value.ForContext("name", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
+            logger.Value.ForContext("Logger", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
         }
 
         internal static LogEventLevel GetLevel(LogLevel level)
