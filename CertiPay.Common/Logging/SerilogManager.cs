@@ -29,6 +29,7 @@
                         .Enrich.WithProperty("Environment", EnvUtil.Current)
 
                         // Note: These enrichers grab info off of the HttpRequest.Context if it's available, otherwise are no-ops
+                        // Further, note that these become available via the log template but are not automatically included in the rolling file output
                         .Enrich.With<HttpRequestIdEnricher>()
                         .Enrich.With<HttpSessionIdEnricher>()
                         .Enrich.With<HttpRequestRawUrlEnricher>()
