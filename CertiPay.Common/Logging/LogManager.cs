@@ -17,7 +17,7 @@
             // Note: These properties are statically configured here, but can be adjusted via their
             // respective set properties by an application for special use cases.
 
-            ApplicationName = ConfigurationManager.AppSettings["Application"].TrimToNull() ?? "Unknown";
+            ApplicationName = ConfigurationManager.AppSettings["ApplicationName"].TrimToNull() ?? "Unknown";
 
             LogFilePath = ConfigurationManager.AppSettings["LogFilePath"].TrimToNull() ?? String.Format(@"c:\Logs\{0}\{1}\{2}.log", EnvUtil.Current, ApplicationName, "{Date}");
 
