@@ -20,7 +20,7 @@ namespace CertiPay.Common
         /// </summary>
         public static string DisplayName(this Enum val)
         {
-            return val.Display(e => e.Name);
+            return val.Display(e => e.GetName());
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace CertiPay.Common
         /// </summary>
         public static string ShortName(this Enum val)
         {
-            return val.Display(e => e.ShortName);
+            return val.Display(e => e.GetShortName());
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CertiPay.Common
         /// </summary>
         public static string Description(this Enum val)
         {
-            return val.Display(e => e.Description);
+            return val.Display(e => e.GetDescription());
         }
 
         private static String Display(this Enum val, Func<DisplayAttribute, String> selector)
