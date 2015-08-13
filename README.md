@@ -33,6 +33,15 @@ Please submit a pull request or issue to the GitHub repository with the appropri
 
 CertiPay.Common.Logging provides an abstraction similar to `Common.Logging`. By default it logs to `C:\Logs\{Environment}\{Application}\{Data}.log`, but can be configured.
 
+Basic settings for Logging and their defaults:
+
+```
+    <add key="ApplicationName" value="{Your_App_Name}" />
+    <add key="Environment" value="Local" <!-- Values: Local/Test/Staging/Production --> />
+    <add key="LogFilePath" value="c:\Logs\{Environment}\{Your_AppName}\{Date}" />
+    <add key="LogLevel" value="Info" <!-- Values: Verbose/Debug/Info/Warn/Error/Fatal --> />
+```
+
 Under the covers, it uses Serilog for it's logging. To enable additional sinks, use the app.config like below:
 
 ```
