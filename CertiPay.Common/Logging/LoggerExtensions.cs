@@ -34,7 +34,6 @@
         /// Log a templated message at the DEBUG log level with properties
         /// </summary>
         /// <typeparam name="TException">The exception that occurred to log the stack trace for</typeparam>
-        /// <param name="level">An enumeration representing the different levels of attention for logging</param>
         /// <param name="messageTemplate">A string message that accepted templated values (either {0} {1} or {prop_1} {prop_2}) a la String.Format</param>
         /// <param name="propertyValues">The properties to replace in the message template</param>
         public static void DebugException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
@@ -56,7 +55,6 @@
         /// Log a templated message at the INFO log level with properties
         /// </summary>
         /// <typeparam name="TException">The exception that occurred to log the stack trace for</typeparam>
-        /// <param name="level">An enumeration representing the different levels of attention for logging</param>
         /// <param name="messageTemplate">A string message that accepted templated values (either {0} {1} or {prop_1} {prop_2}) a la String.Format</param>
         /// <param name="propertyValues">The properties to replace in the message template</param>
         public static void InfoException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
@@ -78,7 +76,6 @@
         /// Log a templated message at the WARN log level with properties
         /// </summary>
         /// <typeparam name="TException">The exception that occurred to log the stack trace for</typeparam>
-        /// <param name="level">An enumeration representing the different levels of attention for logging</param>
         /// <param name="messageTemplate">A string message that accepted templated values (either {0} {1} or {prop_1} {prop_2}) a la String.Format</param>
         /// <param name="propertyValues">The properties to replace in the message template</param>
         public static void WarnException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
@@ -100,7 +97,6 @@
         /// Log a templated message at the ERROR log level with properties
         /// </summary>
         /// <typeparam name="TException">The exception that occurred to log the stack trace for</typeparam>
-        /// <param name="level">An enumeration representing the different levels of attention for logging</param>
         /// <param name="messageTemplate">A string message that accepted templated values (either {0} {1} or {prop_1} {prop_2}) a la String.Format</param>
         /// <param name="propertyValues">The properties to replace in the message template</param>
         public static void ErrorException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
@@ -122,7 +118,6 @@
         /// Log a templated message at the FATAL log level with properties
         /// </summary>
         /// <typeparam name="TException">The exception that occurred to log the stack trace for</typeparam>
-        /// <param name="level">An enumeration representing the different levels of attention for logging</param>
         /// <param name="messageTemplate">A string message that accepted templated values (either {0} {1} or {prop_1} {prop_2}) a la String.Format</param>
         /// <param name="propertyValues">The properties to replace in the message template</param>
         public static void FatalException<TException>(this ILog logger, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
