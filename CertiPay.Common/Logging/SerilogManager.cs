@@ -2,6 +2,7 @@
 {
     using Serilog;
     using Serilog.Events;
+    using SerilogWeb.Classic;
     using SerilogWeb.Classic.Enrichers;
     using System;
 
@@ -9,6 +10,13 @@
     {
         private static readonly Lazy<ILogger> logger = new Lazy<ILogger>(() =>
         {
+            // Set the defaults so that form data will be logged as info on errors
+            // The default for request logging is Information already
+
+            ApplicationLifecycleModule.RequestLoggingLevel = LogEventLevel.Information;
+            ApplicationLifecycleModule.FormDataLoggingLevel = LogEventLevel.Information;
+            ApplicationLifecycleModule.LogPostedFormData = LogPostedFormDataOption.OnlyOnError;
+
             // Provide a default rolling file and console configuration for Serilog
             // User can configure application settings to add on properties or sinks
             // This ensures that the configuration is done once before use
