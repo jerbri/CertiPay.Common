@@ -43,8 +43,9 @@
     <Reference Include="Serilog.FullNetFx">
       <HintPath>..\packages\Serilog.1.5.9\lib\net45\Serilog.FullNetFx.dll</HintPath>
     </Reference>
-    <Reference Include="SerilogWeb.Classic">
-      <HintPath>..\packages\SerilogWeb.Classic.2.0.3\lib\net45\SerilogWeb.Classic.dll</HintPath>
+    <Reference Include="SerilogWeb.Classic, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9462ddd55fbc0e7f, processorArchitecture=MSIL">
+      <HintPath>..\packages\SerilogWeb.Classic.2.0.4\lib\net45\SerilogWeb.Classic.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="StackExchange.Redis">
       <HintPath>..\packages\StackExchange.Redis.1.0.481\lib\net45\StackExchange.Redis.dll</HintPath>
