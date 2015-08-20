@@ -1,7 +1,5 @@
 ﻿using CertiPay.Common.Logging;
 using NUnit.Framework;
-using Serilog;
-using System.Configuration;
 
 namespace CertiPay.Common.Tests.Logging
 {
@@ -17,6 +15,20 @@ namespace CertiPay.Common.Tests.Logging
         public void Ensure_Can_Write_To_Email_Sinks()
         {
             LogManager.GetCurrentClassLogger().Fatal("An error occurred while running this test!");
+        }
+
+        [Test]
+        public void Can_Include_Context()
+        {
+            LogManager
+                .GetCurrentClassLogger()
+                .WithContext("Test", true)
+                .WithContext("OtherContext", new { id = 1, test = false }, destructureObjects: true)
+                .Fatal("An error occured with context!");
+
+            LogManager
+                .GetCurrentClassLogger()
+                .Fatal("An error occured without context!");
         }
     }
 }
