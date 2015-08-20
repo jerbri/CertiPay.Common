@@ -57,11 +57,16 @@
                         .CreateLogger();
         });
 
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         internal SerilogManager(String key)
         {
             _logger = logger.Value.ForContext("Logger", key);
+        }
+
+        internal SerilogManager(ILogger logger)
+        {
+            _logger = logger;
         }
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
@@ -77,8 +82,7 @@
         public ILog WithContext(string propertyName, object value, Boolean destructureObjects = false)
         {
             // Add the context into the _logger and pass back the ILog interface
-            _logger = _logger.ForContext(propertyName, value, destructureObjects);
-            return this;
+            return new SerilogManager(_logger.ForContext(propertyName, value, destructureObjects));
         }
 
         internal static LogEventLevel GetLevel(LogLevel level)
