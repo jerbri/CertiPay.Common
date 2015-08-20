@@ -59,6 +59,8 @@
 
         private readonly String _key;
 
+        private ILogger _logger;
+
         internal SerilogManager(String key)
         {
             _key = key;
@@ -66,12 +68,23 @@
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            logger.Value.ForContext("Logger", _key).Write(GetLevel(level), messageTemplate, propertyValues);
+            (_logger ?? logger.Value)
+                .ForContext("Logger", _key)
+                .Write(GetLevel(level), messageTemplate, propertyValues);
         }
 
         public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            logger.Value.ForContext("Logger", _key).Write(GetLevel(level), exception, messageTemplate, propertyValues);
+            (_logger ?? logger.Value)
+                .ForContext("Logger", _key).
+                Write(GetLevel(level), exception, messageTemplate, propertyValues);
+        }
+
+        public ILog WithContext(string propertyName, object value, Boolean destructureObjects = false)
+        {
+            // Add the context into the _logger and pass back the ILog interface
+            _logger = (_logger ?? logger.Value).ForContext(propertyName, value, destructureObjects);
+            return this;
         }
 
         internal static LogEventLevel GetLevel(LogLevel level)
