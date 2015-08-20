@@ -33,7 +33,7 @@
         /// </summary>
         /// <param name="propertyName">The name to store the context with</param>
         /// <param name="value">The value to store</param>
-        /// <param name="destructureObjects">If true, will desutrcuture (serialized) the object for storage. Defaults to false.</param>
+        /// <param name="destructureObjects">If true, will destructure (serialize) the object for storage. Defaults to false.</param>
         ILog WithContext(String propertyName, Object value, Boolean destructureObjects = false);
     }
 }
