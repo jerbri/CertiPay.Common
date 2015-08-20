@@ -57,27 +57,21 @@
                         .CreateLogger();
         });
 
-        private readonly String _key;
-
-        private ILogger _logger = logger.Value;
+        private ILogger _logger;
 
         internal SerilogManager(String key)
         {
-            _key = key;
+            _logger = logger.Value.ForContext("Logger", key);
         }
 
         public void Log(LogLevel level, string messageTemplate, params object[] propertyValues)
         {
-            _logger
-                .ForContext("Logger", _key)
-                .Write(GetLevel(level), messageTemplate, propertyValues);
+            _logger.Write(GetLevel(level), messageTemplate, propertyValues);
         }
 
         public void Log<TException>(LogLevel level, string messageTemplate, TException exception, params object[] propertyValues) where TException : Exception
         {
-            _logger
-                .ForContext("Logger", _key).
-                Write(GetLevel(level), exception, messageTemplate, propertyValues);
+            _logger.Write(GetLevel(level), exception, messageTemplate, propertyValues);
         }
 
         public ILog WithContext(string propertyName, object value, Boolean destructureObjects = false)
