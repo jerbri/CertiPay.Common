@@ -45,6 +45,7 @@ Task Package -depends Update-AssemblyInfoFiles, Build {
 	exec { . $NuGet pack "$SolutionRoot\CertiPay.Common.Notifications\CertiPay.Common.Notifications.nuspec" -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
 	exec { . $NuGet pack "$SolutionRoot\CertiPay.Database.Maintenance\CertiPay.Database.Maintenance.nuspec" -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
 	exec { . $NuGet pack "$SolutionRoot\CertiPay.PDF\CertiPay.PDF.nuspec" -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
+	exec { . $NuGet pack "$SolutionRoot\CertiPay.Common.Web\CertiPay.Common.Web.nuspec" -Properties Configuration=$Configuration -OutputDirectory "$SolutionRoot" -Version "$Version" }
 }
 
 Task Clean {

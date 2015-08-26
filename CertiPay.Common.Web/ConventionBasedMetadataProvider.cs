@@ -70,7 +70,7 @@ namespace CertiPay.Common.Web
 
             ApplyConventionsToValidationAttributes(propertyAttributes, containerType, propertyName, _defaultResourceType);
 
-            // See if we can find a DisplayAttribute that isn't fully formed
+            // See if we can find a DisplayAttribute that isn't fully formed or else it would've been used earlier
 
             var foundDisplayAttribute = propertyAttributes.OfType<DisplayAttribute>().FirstOrDefault();
 
