@@ -27,14 +27,14 @@ namespace CertiPay.Common.WebServices
         /// Instantiate a default message inspector that logs all sent and received messages
         /// to CertiPay.Common.Logging
         /// </summary>
-        public MessageInspectorBehavior()
+        public MessageInspectorBehavior(LogLevel level = LogLevel.Info)
         {
             var log = LogManager.GetLogger<RawMessageInspector>();
 
             this._inspector = new RawMessageInspector
             {
-                OnSend = (message) => log.WithContext("Message", message).Info("Message Sent"),
-                OnReceive = (message) => log.WithContext("Message", message).Info("Message Received")
+                OnSend = (message) => log.WithContext("Message", message).Log(level, "Message Sent"),
+                OnReceive = (message) => log.WithContext("Message", message).Log(level, "Message Received")
             };
         }
 
