@@ -14,9 +14,10 @@
       <dependency id="NUnit" version="2.6.4" />
       <dependency id="NUnit.Runners" version="2.6.4" />
       <dependency id="Moq" version="4.2.1507.0118" />
-      <dependency id="AutoFixture" version="" />
+      <dependency id="AutoFixture" version="3.31.3" />
       <dependency id="ApprovalTests" version="3.0.9" />
       <dependency id="ApprovalUtilities" version="3.0.9" />
+      <dependency id="Newtonsoft.Json" version="7.0.1" />
     </dependencies>
   </metadata>
   <files>
