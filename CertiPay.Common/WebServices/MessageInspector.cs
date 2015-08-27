@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CertiPay.Common.Logging;
+using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -22,6 +23,25 @@ namespace CertiPay.Common.WebServices
     {
         private IClientMessageInspector _inspector;
 
+        /// <summary>
+        /// Instantiate a default message inspector that logs all sent and received messages
+        /// to CertiPay.Common.Logging
+        /// </summary>
+        public MessageInspectorBehavior()
+        {
+            var log = LogManager.GetLogger<RawMessageInspector>();
+
+            this._inspector = new RawMessageInspector
+            {
+                OnSend = (message) => log.WithContext("Message", message).Info("Message Sent"),
+                OnReceive = (message) => log.WithContext("Message", message).Info("Message Received")
+            };
+        }
+
+        /// <summary>
+        /// Instaniate a message inspector that provides hooks for acting on all
+        /// messages sent or received
+        /// </summary>
         public MessageInspectorBehavior(Action<Message> OnSend, Action<Message> OnReceive)
         {
             this._inspector = new RawMessageInspector { OnSend = OnSend, OnReceive = OnReceive };
