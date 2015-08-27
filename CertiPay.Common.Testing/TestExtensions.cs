@@ -18,6 +18,12 @@
             Approvals.VerifyJson(json);
         }
 
+        /// <summary>
+        /// Returns an auto-initialized instance of the type T, filled via mock
+        /// data via AutoFixture.
+        /// 
+        /// This will not work for interfaces, only concrete types.
+        /// </summary>
         public static T AutoGenerate<T>()
         {
             return _fixture.Create<T>();
