@@ -80,7 +80,10 @@ namespace CertiPay.Common.Web
 
             // Scrap the old display attribute, use our newly copied/created one
 
-            var rewrittenAttributes = propertyAttributes.Replace(foundDisplayAttribute, displayAttribute);
+            var rewrittenAttributes = 
+                propertyAttributes
+                .Except(new[] { foundDisplayAttribute })
+                .Union(new[] { displayAttribute });
 
             // Use the attribute's resource type if specified, fall back to the default
 
