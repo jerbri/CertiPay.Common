@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>CertiPay.Common.Testing</id>
+    <version>1.0.0</version>
+    <title>CertiPay.Common.Testing</title>
+    <tags>certipay, utilities, nunit, testing</tags>
+    <description>A project with the test libraries and some helpers used in CertiPay</description>
+    <projectUrl>https://github.com/CertiPay/CertiPay.Common</projectUrl>
+    <licenseUrl>https://github.com/CertiPay/CertiPay.Common/blob/master/LICENSE.md</licenseUrl>
+    <authors>CertiPay, Matt Wagner</authors>
+    <owners>Matt Wagner</owners>
+    <dependencies>
+      <dependency id="NUnit" version="2.6.4" />
+      <dependency id="NUnit.Runners" version="2.6.4" />
+      <dependency id="Moq" version="4.2.1507.0118" />
+      <dependency id="AutoFixture" version="" />
+      <dependency id="ApprovalTests" version="3.0.9" />
+      <dependency id="ApprovalUtilities" version="3.0.9" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\CertiPay.Common.Testing*" target="lib\net451" />
+    <file src="..\README.md" target="tools" />
+    <file src="..\LICENSE.md" target="tools" />
+  </files>
+</package>
