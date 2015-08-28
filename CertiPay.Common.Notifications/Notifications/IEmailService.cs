@@ -28,23 +28,33 @@ namespace CertiPay.Common.Notifications
     {
         private static readonly ILog Log = LogManager.GetLogger<IEmailService>();
 
+        private readonly SmtpClient _smtp;
+
+        private static TimeSpan _downloadTimeout = TimeSpan.FromMinutes(1);
+
+        private static IEnumerable<String> _testingDomains = new[] { "certipay.com", "certigy.com" };
+
         /// <summary>
         /// The length of time we'll allow for downloading attachments for email notifications
         /// </summary>
-        public static readonly TimeSpan DownloadTimeout = TimeSpan.FromMinutes(2);
+        public static TimeSpan DownloadTimeout
+        {
+            get { return _downloadTimeout; }
+            set { _downloadTimeout = value; }
+        }
 
         /// <summary>
         /// A list of domains that we will allow emails to go to from outside of the production environment
         /// </summary>
-        public IEnumerable<String> AllowedTestingDomains { get; set; }
-
-        private readonly SmtpClient _smtp;
+        public static IEnumerable<String> AllowedTestingDomains
+        {
+            get { return _testingDomains; }
+            set { _testingDomains = value; }
+        }
 
         public EmailService(SmtpClient smtp)
         {
             this._smtp = smtp;
-
-            this.AllowedTestingDomains = new[] { "certipay.com", "certigy.com" };
         }
 
         public async Task SendAsync(EmailNotification notification)
