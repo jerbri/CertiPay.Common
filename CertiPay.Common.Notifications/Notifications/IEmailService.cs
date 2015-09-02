@@ -33,6 +33,7 @@ namespace CertiPay.Common.Notifications
         private static TimeSpan _downloadTimeout = TimeSpan.FromMinutes(1);
 
         private static IEnumerable<String> _testingDomains = new[] { "certipay.com", "certigy.com" };
+        private static bool _allowedTestingDomainsEnabled = !EnvUtil.IsProd;
 
         /// <summary>
         /// The length of time we'll allow for downloading attachments for email notifications
@@ -50,6 +51,16 @@ namespace CertiPay.Common.Notifications
         {
             get { return _testingDomains; }
             set { _testingDomains = value; }
+        }
+
+        /// <summary>
+        /// Determines if AllowedTestingDomains will be evaluated when sending emails.
+        /// </summary>
+        /// <remarks>Enabled by default in all environments except production.</remarks>
+        public static bool AllowedTestingDomainsEnabled
+        {
+            get { return _allowedTestingDomainsEnabled; }
+            set { _allowedTestingDomainsEnabled = value; }
         }
 
         public EmailService(SmtpClient smtp)
@@ -125,7 +136,7 @@ namespace CertiPay.Common.Notifications
 
         public virtual void FilterRecipients(MailAddressCollection addresses)
         {
-            if (!EnvUtil.IsProd)
+            if (_allowedTestingDomainsEnabled)
             {
                 // This is so we don't accidentally send customers emails from non-prod environments
 
