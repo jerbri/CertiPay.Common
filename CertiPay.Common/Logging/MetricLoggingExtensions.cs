@@ -11,11 +11,11 @@
     /// </remarks>
     public static class MetricLoggingExtensions
     {
-        private const String Timer_Start = "Starting Operation {TimedOperationId}: {TimedOperationDescription}";
+        private const String Timer_Start = "Starting Operation {@TimedOperationId}: {TimedOperationDescription}";
 
-        private const String Timer_Finish = "Completed Operation {TimedOperationId}: {TimedOperationDescription} in {TimedOperationElapsed} ({TimedOperationElapsedInMs} ms)";
+        private const String Timer_Finish = "Completed Operation {@TimedOperationId}: {TimedOperationDescription} in {TimedOperationElapsed} ({TimedOperationElapsedInMs} ms)";
 
-        private const String Timer_Warning = "Operation {TimedOperationId}: {TimedOperationDescription} exceeded the limit of {WarningLimit} by completing in {TimedOperationElapsed}  ({TimedOperationElapsedInMs} ms)";
+        private const String Timer_Warning = "Operation {@TimedOperationId}: {TimedOperationDescription} exceeded the limit of {WarningLimit} by completing in {TimedOperationElapsed}  ({TimedOperationElapsedInMs} ms)";
 
         /// <summary>
         /// Track the execution time of a particular block of code for debugging purposes with the given description and identifier.
