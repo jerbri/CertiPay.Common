@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\LogManagerTests.cs" />
+    <Compile Include="Logging\MetricLoggingExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Redis\RedisCacheTests.cs" />
     <Compile Include="Redis\RedisQueueManagerTests.cs" />
