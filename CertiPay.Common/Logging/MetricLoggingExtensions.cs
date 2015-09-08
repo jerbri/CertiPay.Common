@@ -33,15 +33,13 @@
         /// }
         ///
         /// </example>
-        public static IDisposable Timer(this ILog logger, String description, String identifier = "", TimeSpan? warnIfExceeds = null, LogLevel level = LogLevel.Info)
+        public static IDisposable Timer(this ILog logger, String description, object context = null, TimeSpan? warnIfExceeds = null, LogLevel level = LogLevel.Info)
         {
-            // TODO They'll pass in a logger in the extension method, but we'll use a more refined logging mechanism?
-
             // If no identifer was provided for this transaction, just create a GUID to use
 
-            identifier = identifier.TrimToNull() ?? Guid.NewGuid().ToString();
+            context = context ?? Guid.NewGuid().ToString();
 
-            return new Timing(logger, warnIfExceeds, identifier, description, level);
+            return new Timing(logger, warnIfExceeds, context, description, level);
         }
 
         //public static void Gauge(this ILog logger, String name, String unit_of_measure, Func<long> value)
