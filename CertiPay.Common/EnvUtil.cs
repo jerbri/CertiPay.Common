@@ -45,8 +45,6 @@ namespace CertiPay.Common
         /// </summary>
         public static Boolean IsProd { get { return Environment.Production == Current; } }
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EnvUtil).Name);
-
         private static readonly Lazy<Environment> current = new Lazy<Environment>(() =>
         {
             Environment environment = Environment.Local;
@@ -54,7 +52,7 @@ namespace CertiPay.Common
             String envString = ConfigurationManager.AppSettings["Environment"].TrimToNull() ?? "Local";
 
             if (!Enum.TryParse<Environment>(value: envString, ignoreCase: true, result: out environment))
-                Log.Warn("Environment configuration is invalid. {0}", envString);
+                LogManager.GetLogger("EnvUtil").Warn("Environment configuration is invalid. {0}", envString);
 
             return environment;
         });
