@@ -5,6 +5,9 @@ using System.Configuration;
 
 namespace CertiPay.Common.Redis
 {
+    /// <summary>
+    /// A base representing
+    /// </summary>
     public class RedisConnection
     {
         private static readonly ILog Log = LogManager.GetLogger<RedisConnection>();
@@ -17,14 +20,14 @@ namespace CertiPay.Common.Redis
         private readonly int _port;
         private readonly int _defaultDb;
 
-        public RedisConnection(string host = "localhost", int port = 6379, int defaultDb = 0, string password = null)
+        public RedisConnection(string host = "localhost", int port = 6379, int defaultDb = 0, string password = null, ConfigurationOptions configuration = null)
         {
             this._host = host;
             this._port = port;
 
             this._defaultDb = defaultDb;
 
-            var options = new ConfigurationOptions
+            var options = configuration ?? new ConfigurationOptions
             {
                 Password = password,
                 AbortOnConnectFail = false,

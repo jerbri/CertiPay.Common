@@ -88,7 +88,7 @@
                 framesToSkip++;
 
                 className = declaringType.FullName;
-            } 
+            }
             while (declaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase));
 
             return GetLogger(className);

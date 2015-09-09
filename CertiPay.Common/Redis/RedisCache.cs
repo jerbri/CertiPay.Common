@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CertiPay.Common.Redis
 {
     /// <summary>
-    /// An instance of the ICache that stores our cache data in a redis instance
+    /// An instance of the ICache that stores cache data in a redis instance
     /// </summary>
     public class RedisCache : ICache
     {

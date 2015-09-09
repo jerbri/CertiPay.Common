@@ -9,7 +9,7 @@ namespace CertiPay.Common.WorkQueue
     /// </summary>
     public interface IQueueManager
     {
-        // Do we want to require that messages implement a certain interface for things like priority or just function as FIFO queue?
+        // TODO Do we want to require that messages implement a certain interface for things like priority or just function as FIFO queue?
 
         /// <summary>
         /// Retrieves a list of queue names in use and their current sizes

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CertiPay.Common.Redis
 {
+    /// <summary>
+    /// An implementation of the IQueueManager that utilizes Redis lists for it's backend
+    /// </summary>
     public class RedisQueueManager : IQueueManager
     {
         private const String QueueSet = "QueueNames";
