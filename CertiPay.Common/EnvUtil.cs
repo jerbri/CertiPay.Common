@@ -34,7 +34,7 @@ namespace CertiPay.Common
         {
             Environment environment = Environment.Local;
 
-            String envString = ConfigurationManager.AppSettings["Environment"] ?? "Local";
+            String envString = ConfigurationManager.AppSettings["Environment"].TrimToNull() ?? "Local";
 
             if (!Enum.TryParse<Environment>(value: envString, ignoreCase: true, result: out environment))
                 Log.Warn("Environment configuration is invalid. {0}", envString);
