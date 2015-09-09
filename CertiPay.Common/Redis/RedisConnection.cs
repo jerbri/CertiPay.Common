@@ -20,14 +20,14 @@ namespace CertiPay.Common.Redis
         private readonly int _port;
         private readonly int _defaultDb;
 
-        public RedisConnection(string host = "localhost", int port = 6379, int defaultDb = 0, string password = null, ConfigurationOptions configuration = null)
+        public RedisConnection(string host = "localhost", int port = 6379, int defaultDb = 0, string password = null)
         {
             this._host = host;
             this._port = port;
 
             this._defaultDb = defaultDb;
 
-            var options = configuration ?? new ConfigurationOptions
+            var options = new ConfigurationOptions
             {
                 Password = password,
                 AbortOnConnectFail = false,
