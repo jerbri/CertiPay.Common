@@ -80,6 +80,7 @@
     <Compile Include="Extensions\DisplayAttributeExtensions.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
     <Compile Include="MetadataConventionsAttribute.cs" />
+    <Compile Include="RequireHttpsOverrideAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CertiPay.Common.Web.nuspec">
