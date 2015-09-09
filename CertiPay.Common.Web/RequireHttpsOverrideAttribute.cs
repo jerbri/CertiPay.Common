@@ -5,7 +5,7 @@ using RequireHttpsAttributeBase = System.Web.Mvc.RequireHttpsAttribute;
 namespace CertiPay.Common.Web
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
-    public class RequireHttpsAttributeAttribute : RequireHttpsAttributeBase
+    public class RequireHttpsOverrideAttribute : RequireHttpsAttributeBase
     {
         // This class is borrowed from the AppHarbor FAQ's.
         // Right now, we mainly use it for the Request.IsLocal check to avoid requiring SSL locally
