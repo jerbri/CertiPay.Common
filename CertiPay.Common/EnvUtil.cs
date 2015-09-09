@@ -1,5 +1,7 @@
-﻿using System;
+using System;
 using System.Configuration;
+using CertiPay.Common.Logging;
+using CertiPay.Common.Redis;
 
 namespace CertiPay.Common
 {
@@ -26,13 +28,16 @@ namespace CertiPay.Common
 
         public static Boolean IsProd { get { return Environment.Production == Current; } }
 
+        private static readonly ILog Log = LogManager.GetLogger(typeof(EnvUtil).Name);
+
         private static readonly Lazy<Environment> current = new Lazy<Environment>(() =>
         {
             Environment environment = Environment.Local;
 
-            String envString = ConfigurationManager.AppSettings["Environment"].TrimToNull() ?? "Local";
+            String envString = ConfigurationManager.AppSettings["Environment"] ?? "Local";
 
-            Enum.TryParse<Environment>(value: envString, ignoreCase: true, result: out environment);
+            if (!Enum.TryParse<Environment>(value: envString, ignoreCase: true, result: out environment))
+                Log.Warn("Environment configuration is invalid. {0}", envString);
 
             return environment;
         });
