@@ -1,4 +1,5 @@
-﻿using CertiPay.Common.Notifications;
+﻿using CertiPay.Common.Logging;
+using CertiPay.Common.Notifications;
 using RestSharp.Serializers;
 using System;
 using System.Net.Http;
@@ -9,6 +10,8 @@ namespace CertiPay.Notifications
 {
     public class ServiceSender : INotificationSender<EmailNotification>, INotificationSender<SMSNotification>
     {
+        private static readonly ILog Log = LogManager.GetLogger<ServiceSender>();
+
         public readonly Uri ServiceUri;
 
         public TimeSpan Timeout { get; set; }
@@ -33,15 +36,21 @@ namespace CertiPay.Notifications
 
         public async Task SendAsync(SMSNotification notification)
         {
-            await Post("/SMS", notification);
+            using (Log.Timer("ServiceSender.SendAsync", context: notification, warnIfExceeds: this.Timeout))
+            {
+                await Post("/SMS", notification);
+            }
         }
 
         public async Task SendAsync(EmailNotification notification)
         {
-            await Post("/Emails", notification);
+            using (Log.Timer("ServiceSender.SendAsync", context: notification, warnIfExceeds: this.Timeout))
+            {
+                await Post("/Emails", notification);
+            }
         }
 
-        public virtual async Task Post<T>(String resource, T t)
+        protected virtual async Task Post<T>(String resource, T t)
         {
             var json = Serializer.Serialize(t);
 
@@ -50,7 +59,7 @@ namespace CertiPay.Notifications
             await GetClient().PostAsync(resource, content);
         }
 
-        public virtual HttpClient GetClient()
+        protected virtual HttpClient GetClient()
         {
             return new HttpClient() { BaseAddress = this.ServiceUri, Timeout = this.Timeout };
         }
