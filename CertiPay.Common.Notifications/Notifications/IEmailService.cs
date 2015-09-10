@@ -158,17 +158,17 @@ namespace CertiPay.Common.Notifications
         {
             using (HttpClient client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true }) { Timeout = DownloadTimeout })
             {
-                Log.Debug("Attaching {@attachment} for {@msg}", attachment, msg);
+                Log.Info("Attaching {@attachment} for {@msg}", attachment, msg);
 
                 if (String.IsNullOrWhiteSpace(attachment.Uri))
                 {
-                    Log.Debug("No Url provided for attachment, skipping");
+                    Log.Warn("No Url provided for attachment, skipping");
                     return;
                 }
 
                 if (String.IsNullOrWhiteSpace(attachment.Filename))
                 {
-                    Log.Debug("No filename provided for attachment, using default");
+                    Log.Warn("No filename provided for attachment, using default");
                     attachment.Filename = "Attachment.pdf";
                 }
 
@@ -178,7 +178,7 @@ namespace CertiPay.Common.Notifications
 
                 msg.Attachments.Add(new Attachment(new MemoryStream(data), attachment.Filename));
 
-                Log.Debug("Completed attachment for {@msg}", msg);
+                Log.Info("Completed attachment for {@msg}", msg);
             }
         }
     }
