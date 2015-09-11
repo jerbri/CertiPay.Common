@@ -133,7 +133,8 @@ namespace CertiPay.Common.Notifications
             await _smtp.SendMailAsync(message).ContinueWith(x =>
             {
                 Log.Info("Sent email {@message}", message);
-            });
+            }, 
+            TaskContinuationOptions.OnlyOnRanToCompletion);
 
             // TODO Catch/Handle exceptions or not?
         }
