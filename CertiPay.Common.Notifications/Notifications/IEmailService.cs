@@ -119,8 +119,6 @@ namespace CertiPay.Common.Notifications
                 _smtp.Send(message);
 
                 Log.Info("Sent email {@message}", message);
-
-                // TODO Catch/Handle exceptions or not?
             }
         }
 
@@ -135,8 +133,6 @@ namespace CertiPay.Common.Notifications
                 Log.Info("Sent email {@message}", message);
             }, 
             TaskContinuationOptions.OnlyOnRanToCompletion);
-
-            // TODO Catch/Handle exceptions or not?
         }
 
         public virtual void FilterRecipients(MailAddressCollection addresses)
