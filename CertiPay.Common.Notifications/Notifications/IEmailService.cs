@@ -110,15 +110,18 @@ namespace CertiPay.Common.Notifications
 
         public void Send(MailMessage message)
         {
-            FilterRecipients(message.To);
-            FilterRecipients(message.CC);
-            FilterRecipients(message.Bcc);
+            using (Log.Timer("EmailService.Send"))
+            {
+                FilterRecipients(message.To);
+                FilterRecipients(message.CC);
+                FilterRecipients(message.Bcc);
 
-            _smtp.Send(message);
+                _smtp.Send(message);
 
-            Log.Info("Sent email {@message}", message);
+                Log.Info("Sent email {@message}", message);
 
-            // TODO Catch/Handle exceptions or not?
+                // TODO Catch/Handle exceptions or not?
+            }
         }
 
         public async Task SendAsync(MailMessage message)
