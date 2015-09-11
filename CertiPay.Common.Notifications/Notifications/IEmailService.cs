@@ -127,9 +127,10 @@ namespace CertiPay.Common.Notifications
             FilterRecipients(message.CC);
             FilterRecipients(message.Bcc);
 
-            await _smtp.SendMailAsync(message);
-
-            Log.Info("Sent email {@message}", message);
+            await _smtp.SendMailAsync(message).ContinueWith(x =>
+            {
+                Log.Info("Sent email {@message}", message);
+            });
 
             // TODO Catch/Handle exceptions or not?
         }
