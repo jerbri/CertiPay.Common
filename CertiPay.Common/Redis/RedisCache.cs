@@ -1,4 +1,5 @@
 ﻿using CertiPay.Common.Cache;
+using CertiPay.Common.Logging;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using System;
@@ -11,6 +12,8 @@ namespace CertiPay.Common.Redis
     /// </summary>
     public class RedisCache : ICache
     {
+        private static readonly ILog Log = LogManager.GetLogger<RedisCache>();
+
         private readonly RedisConnection _connection;
 
         public RedisCache(RedisConnection connection)
@@ -41,15 +44,18 @@ namespace CertiPay.Common.Redis
 
         public Boolean TryGet<T>(string key, out T value)
         {
-            value = default(T);
+            using (Log.Timer("RedisCache.TryGet", context: key, level: LogLevel.Debug))
+            {
+                value = default(T);
 
-            string json = _connection.GetClient().StringGet(key);
+                string json = _connection.GetClient().StringGet(key);
 
-            if (String.IsNullOrWhiteSpace(json)) return false;
+                if (String.IsNullOrWhiteSpace(json)) return false;
 
-            value = JsonConvert.DeserializeObject<T>(json);
+                value = JsonConvert.DeserializeObject<T>(json);
 
-            return true;
+                return true;
+            }
         }
 
         public async Task Add<T>(string key, T value)
