@@ -110,7 +110,7 @@ namespace CertiPay.Common.Notifications
 
         public void Send(MailMessage message)
         {
-            using (Log.Timer("EmailService.Send", context: message))
+            using (Log.Timer("EmailService.Send", context: ForLog(message)))
             {
                 FilterRecipients(message.To);
                 FilterRecipients(message.CC);
@@ -130,7 +130,7 @@ namespace CertiPay.Common.Notifications
 
             await _smtp.SendMailAsync(message).ContinueWith(x =>
             {
-                Log.Info("Sent email {@message}", message);
+                Log.Info("Sent email {@message}", ForLog(message));
             }, 
             TaskContinuationOptions.OnlyOnRanToCompletion);
         }
@@ -159,7 +159,7 @@ namespace CertiPay.Common.Notifications
         {
             using (HttpClient client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true }) { Timeout = DownloadTimeout })
             {
-                Log.Info("Attaching {@attachment} for {@msg}", attachment, msg);
+                Log.Info("Attaching {@attachment} for {@msg}", attachment, ForLog(msg));
 
                 if (String.IsNullOrWhiteSpace(attachment.Uri))
                 {
@@ -181,6 +181,18 @@ namespace CertiPay.Common.Notifications
 
                 Log.Info("Completed attachment for {@msg}", msg);
             }
+        }
+
+        private static object ForLog(MailMessage msg)
+        {
+            return new
+            {
+                msg.To,
+                msg.From,
+                msg.CC,
+                msg.Bcc,
+                msg.Subject
+            };
         }
     }
 }
