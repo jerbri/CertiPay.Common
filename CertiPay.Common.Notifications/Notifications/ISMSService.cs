@@ -35,10 +35,8 @@ namespace CertiPay.Common.Notifications
 
         public Task SendAsync(SMSNotification notification)
         {
-            using (Log.Timer("SMSNotification.SendAsync"))
+            using (Log.Timer("SMSNotification.SendAsync", context: notification))
             {
-                Log.Info("Sending SMSNotification {@Notification}", notification);
-
                 // TODO Add error handling
 
                 var client = new TwilioRestClient(_twilioAccountSId, _twilioAuthToken);
