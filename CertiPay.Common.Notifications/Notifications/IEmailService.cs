@@ -179,7 +179,7 @@ namespace CertiPay.Common.Notifications
 
                 msg.Attachments.Add(new Attachment(new MemoryStream(data), attachment.Filename));
 
-                Log.Info("Completed attachment for {@msg}", msg);
+                Log.Info("Completed attachment for {@msg}", ForLog(msg));
             }
         }
 
