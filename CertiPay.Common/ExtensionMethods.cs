@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 
 namespace CertiPay.Common
@@ -45,11 +46,11 @@ namespace CertiPay.Common
         {
             FieldInfo fi = val.GetType().GetField(val.ToString());
 
-            DisplayAttribute[] attributes = (DisplayAttribute[])fi.GetCustomAttributes(typeof(DisplayAttribute), false);
+            var attributes = fi.GetCustomAttributes<DisplayAttribute>();
 
-            if (attributes != null && attributes.Length > 0)
+            if (attributes != null && attributes.Any())
             {
-                return selector.Invoke(attributes[0]);
+                return selector.Invoke(attributes.First());
             }
 
             return val.ToString();
