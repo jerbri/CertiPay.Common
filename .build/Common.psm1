@@ -26,7 +26,7 @@ function Install-Psake()
 {
 	if(!(Test-Path $env:ChocolateyInstall\lib\Psake*)) 
 	{ 
-		choco install psake 
+		choco install psake -y
 	}
 }
 
