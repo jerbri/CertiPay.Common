@@ -33,6 +33,8 @@ Please submit a pull request or issue to the GitHub repository with the appropri
 
 CertiPay.Common.Logging provides an abstraction similar to `Common.Logging`. By default it logs to `C:\Logs\{Environment}\{Application}\{Data}.log`, but can be configured.
 
+You can use it by calling `CertiPay.Common.Logging.LogManager.GetLogger<T>()` to retrieve a configured instance of `ILog`. From there, you can use the typical `Log.Info` or `Log.ErrorException` extension methods to provide the log level intended.
+
 Basic settings for Logging and their defaults:
 
 ```
