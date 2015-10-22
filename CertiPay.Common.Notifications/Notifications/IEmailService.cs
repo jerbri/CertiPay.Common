@@ -187,10 +187,10 @@ namespace CertiPay.Common.Notifications
         {
             return new
             {
-                msg.To,
+                To = String.Join(",",  msg.To.Select(_ => _.Address)),
+                CC = String.Join(",", msg.CC.Select(_ => _.Address)),
+                Bcc = String.Join(",", msg.Bcc.Select(_ => _.Address)),
                 msg.From,
-                msg.CC,
-                msg.Bcc,
                 msg.Subject
             };
         }
