@@ -7,9 +7,9 @@ namespace CertiPay.Common
 {
     public static class ExtensionMethods
     {
-        public static T FromJson<T>(this String s)
+        public static T FromJson<T>(this String json)
         {
-            return SimpleJson.DeserializeObject<T>(s);
+            return SimpleJson.DeserializeObject<T>(json);
         }
 
         public static String ToJson(this object obj)
