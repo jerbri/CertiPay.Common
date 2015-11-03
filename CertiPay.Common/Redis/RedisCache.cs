@@ -59,12 +59,12 @@ namespace CertiPay.Common.Redis
 
         public async Task Add<T>(string key, T value)
         {
-            await _connection.GetClient().StringSetAsync(key, SimpleJson.SerializeObject(value));
+            await _connection.GetClient().StringSetAsync(key, SimpleJson.SerializeObject(value)).ConfigureAwait(false);
         }
 
         public async Task Remove(string key)
         {
-            await _connection.GetClient().KeyDeleteAsync(key, CommandFlags.FireAndForget);
+            await _connection.GetClient().KeyDeleteAsync(key, CommandFlags.FireAndForget).ConfigureAwait(false);
         }
     }
 }

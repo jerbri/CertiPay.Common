@@ -26,7 +26,7 @@ namespace CertiPay.Common.Redis
 
             var client = _connection.GetClient();
 
-            var queueNames = await client.SetMembersAsync(QueueSet);
+            var queueNames = await client.SetMembersAsync(QueueSet).ConfigureAwait(false);
 
             return from queue in queueNames
                    select new Queue
@@ -44,7 +44,7 @@ namespace CertiPay.Common.Redis
 
             var queue = GetQueue(queueName, Queue.QueuedNamespace);
 
-            var value = await _connection.GetClient().ListRightPopAsync(queue);
+            var value = await _connection.GetClient().ListRightPopAsync(queue).ConfigureAwait(false);
 
             if (String.IsNullOrWhiteSpace(value)) return default(T);
 
@@ -72,7 +72,7 @@ namespace CertiPay.Common.Redis
             int start = --page * itemsPerPage;
             int stop = start + itemsPerPage;
 
-            var values = await _connection.GetClient().ListRangeAsync(queue, start, stop);
+            var values = await _connection.GetClient().ListRangeAsync(queue, start, stop).ConfigureAwait(false);
 
             return from value in values select SimpleJson.DeserializeObject<T>(value);
         }
@@ -85,7 +85,7 @@ namespace CertiPay.Common.Redis
 
             var json = SimpleJson.SerializeObject(t);
 
-            await _connection.GetClient().ListLeftPushAsync(queue, json);
+            await _connection.GetClient().ListLeftPushAsync(queue, json).ConfigureAwait(false);
 
             await TrackQueueName(queueName);
         }
@@ -96,7 +96,7 @@ namespace CertiPay.Common.Redis
 
             var json = SimpleJson.SerializeObject(t);
 
-            await _connection.GetClient().ListLeftPushAsync(queue, json);
+            await _connection.GetClient().ListLeftPushAsync(queue, json).ConfigureAwait(false);
         }
 
         public async Task MarkFailed<T>(String queueName, FailedWorkItem<T> t) where T : class
@@ -105,7 +105,7 @@ namespace CertiPay.Common.Redis
 
             var json = SimpleJson.SerializeObject(t);
 
-            await _connection.GetClient().ListLeftPushAsync(queue, json);
+            await _connection.GetClient().ListLeftPushAsync(queue, json).ConfigureAwait(false);
         }
 
         public async Task Purge(String queueName)
@@ -114,7 +114,7 @@ namespace CertiPay.Common.Redis
 
             var queue = GetQueue(queueName);
 
-            await _connection.GetClient().KeyDeleteAsync(queue);
+            await _connection.GetClient().KeyDeleteAsync(queue).ConfigureAwait(false);
         }
 
         private async Task TrackQueueName(String queueName)
@@ -122,7 +122,7 @@ namespace CertiPay.Common.Redis
             // Keep a list of work queues for faster reference when building admin page
             // Assuming the given queue name doesn't have any namespacing...
 
-            await _connection.GetClient().SetAddAsync(QueueSet, queueName);
+            await _connection.GetClient().SetAddAsync(QueueSet, queueName).ConfigureAwait(false);
         }
 
         private String GetQueue(String queueName, String queueNamespace = Queue.QueuedNamespace)
