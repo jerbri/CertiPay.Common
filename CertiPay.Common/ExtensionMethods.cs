@@ -7,6 +7,16 @@ namespace CertiPay.Common
 {
     public static class ExtensionMethods
     {
+        public static T FromJson<T>(this String s)
+        {
+            return SimpleJson.DeserializeObject<T>(s);
+        }
+
+        public static String ToJson(this object obj)
+        {
+            return SimpleJson.SerializeObject(obj);
+        }
+
         /// <summary>
         /// Trims the string of any whitestace and leaves null if there is no content.
         /// </summary>
