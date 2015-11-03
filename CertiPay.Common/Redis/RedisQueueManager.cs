@@ -1,5 +1,4 @@
 ﻿using CertiPay.Common.WorkQueue;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace CertiPay.Common.Redis
 
             if (String.IsNullOrWhiteSpace(value)) return default(T);
 
-            return JsonConvert.DeserializeObject<T>(value);
+            return SimpleJson.DeserializeObject<T>(value);
         }
 
         public IEnumerable<T> GetConsumingEnumerable<T>(String queueName) where T : class
@@ -75,7 +74,7 @@ namespace CertiPay.Common.Redis
 
             var values = await _connection.GetClient().ListRangeAsync(queue, start, stop);
 
-            return from value in values select JsonConvert.DeserializeObject<T>(value);
+            return from value in values select SimpleJson.DeserializeObject<T>(value);
         }
 
         public async Task Enqueue<T>(String queueName, T t) where T : class
@@ -84,7 +83,7 @@ namespace CertiPay.Common.Redis
 
             var queue = GetQueue(queueName, Queue.QueuedNamespace);
 
-            var json = JsonConvert.SerializeObject(t);
+            var json = SimpleJson.SerializeObject(t);
 
             await _connection.GetClient().ListLeftPushAsync(queue, json);
 
@@ -95,7 +94,7 @@ namespace CertiPay.Common.Redis
         {
             var queue = GetQueue(queueName, Queue.ProcessedNamespace);
 
-            var json = JsonConvert.SerializeObject(t);
+            var json = SimpleJson.SerializeObject(t);
 
             await _connection.GetClient().ListLeftPushAsync(queue, json);
         }
@@ -104,7 +103,7 @@ namespace CertiPay.Common.Redis
         {
             var queue = GetQueue(queueName, Queue.FailedNamespace);
 
-            var json = JsonConvert.SerializeObject(t);
+            var json = SimpleJson.SerializeObject(t);
 
             await _connection.GetClient().ListLeftPushAsync(queue, json);
         }
