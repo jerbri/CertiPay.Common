@@ -51,7 +51,7 @@ namespace CertiPay.Common.Redis
 
                 if (String.IsNullOrWhiteSpace(json)) return false;
 
-                value = SimpleJson.DeserializeObject<T>(json);
+                value = json.FromJson<T>();
 
                 return true;
             }
@@ -59,7 +59,7 @@ namespace CertiPay.Common.Redis
 
         public async Task Add<T>(string key, T value)
         {
-            await _connection.GetClient().StringSetAsync(key, SimpleJson.SerializeObject(value)).ConfigureAwait(false);
+            await _connection.GetClient().StringSetAsync(key, value.ToJson()).ConfigureAwait(false);
         }
 
         public async Task Remove(string key)

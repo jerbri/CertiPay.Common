@@ -2,17 +2,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Web.Script.Serialization;
 
 namespace CertiPay.Common
 {
     public static class ExtensionMethods
     {
+        private static readonly JavaScriptSerializer js = new JavaScriptSerializer();
+
         /// <summary>
         /// Deserializes the string as json into a POCO
         /// </summary>
         public static T FromJson<T>(this String json)
         {
-            return SimpleJson.DeserializeObject<T>(json);
+            return js.Deserialize<T>(json);
         }
 
         /// <summary>
@@ -20,7 +23,7 @@ namespace CertiPay.Common
         /// </summary>
         public static String ToJson(this object obj)
         {
-            return SimpleJson.SerializeObject(obj);
+            return js.Serialize(obj);
         }
 
         /// <summary>
