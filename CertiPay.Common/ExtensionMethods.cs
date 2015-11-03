@@ -7,11 +7,17 @@ namespace CertiPay.Common
 {
     public static class ExtensionMethods
     {
+        /// <summary>
+        /// Deserializes the string as json into a POCO
+        /// </summary>
         public static T FromJson<T>(this String json)
         {
             return SimpleJson.DeserializeObject<T>(json);
         }
 
+        /// <summary>
+        /// Serializes the POCO into a json string
+        /// </summary>
         public static String ToJson(this object obj)
         {
             return SimpleJson.SerializeObject(obj);
