@@ -30,5 +30,24 @@ namespace CertiPay.Common.Tests.Logging
                 .GetCurrentClassLogger()
                 .Fatal("An error occured without context!");
         }
+
+        [Test]
+        public void Can_Have_Mulitiple_Contexts()
+        {
+
+            var log = LogManager
+                .GetCurrentClassLogger();
+
+            log
+                .AddContext("Property1", "Context will be maintained for life of logger")
+                .Fatal("Proeprty1 should be visible.");
+
+            log
+                .WithContext("Property2", "Context only appended to this log message, not the logger")
+                .Fatal("Property1 and Proeprty 2 should be visible");
+
+            log.Fatal("Property1 should only be visible now");
+
+        }
     }
 }
