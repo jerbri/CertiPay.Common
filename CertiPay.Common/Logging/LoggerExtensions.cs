@@ -126,15 +126,15 @@
         }
 
         /// <summary>
-        /// Provide additional context for the log entry that might not necessarily be represented in the message output
+        /// Adds additional context to the logger that will be used on all subsequent log entries.
         /// </summary>
         /// <param name="propertyName">The name to store the context with</param>
         /// <param name="value">The value to store</param>
         /// <param name="destructureObjects">If true, will destructure (serialize) the object for storage. Defaults to false.</param>
-        public static ILog AddContext(this ILog logger, string propertyName, object value, Boolean destructureObjects = false)
+        public static ILog AddLogContext(this ILog logger, string propertyName, object value, Boolean destructureObjects = false)
         {
             logger = logger.WithContext(propertyName, value, destructureObjects);
-
+            
             return logger;
         }
     }

@@ -39,7 +39,7 @@ namespace CertiPay.Common.Tests.Logging
                 .GetCurrentClassLogger();
 
             log
-                .AddContext("Property1", "Context will be maintained for life of logger")
+                .AddLogContext("Property1", "Context will be maintained for life of logger")
                 .Fatal("Proeprty1 should be visible.");
 
             log
